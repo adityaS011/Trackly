@@ -89,15 +89,13 @@
     <li>Changing task status: Users can change the task status via the dropdown. When a status change is triggered, a confirmation modal appears with options to <em>Proceed</em> or <em>Cancel</em>. Once confirmed, the task is removed from the current list while the modal remains in focus mode until data is refreshed.</li>
 </ul>
 
-<p><strong>Keyboard Traversing in Focus Modal:</strong> The modal supports keyboard navigation with Right and Left arrow keys to traverse tasks in focus mode. Additionally, shortcut keys are available for quick status changes: 1 for Open, 2 for In Progress, and 3 for Closed.</p>
+<p><strong>Keyboard Traversing in Focus Modal:</strong> The modal supports keyboard navigation for quick status changes: 1 for Open, 2 for In Progress, and 3 for Closed.</p>
 
 <p><strong>Additional Features:</strong></p>
 <ul style="font-size: 1.15rem; line-height: 1.75;">
     <li>Filter and search support within the table for easy task retrieval.</li>
     <li>Task counts displayed and maintained in tabs.</li>
-    <li>Inline actions on tasks directly from the table view.</li>
     <li>Sorting functionality based on creation or update timestamps.</li>
-    <li>Potential for identifying and reporting bugs within existing Superdm products.</li>
 </ul>
 
 
