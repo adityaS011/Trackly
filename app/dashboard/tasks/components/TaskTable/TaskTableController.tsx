@@ -26,25 +26,26 @@ const TaskTableController = ({
   });
   const searchParams = useSearchParams();
   const router = useRouter();
+  const [selectedRowIndex, setSelectedRowIndex] = useState(0);
+
   const addTask = () => {
     setShowTaskModal(true);
   };
 
   const handleEditClick = (id: string) => {
     setShowTaskModal(true);
-
     const task = tasksData.find((item) => item.id === id);
     if (task) setTaskToEdit(task);
+
     const currentUrl = new URL(window.location.href);
     currentUrl.searchParams.set('task_id', id);
-
     router.replace(currentUrl.toString());
   };
+
   const handleModalClose = () => {
     setShowTaskModal(false);
     const currentUrl = new URL(window.location.href);
     currentUrl.searchParams.delete('task_id');
-
     router.replace(currentUrl.toString());
   };
 
@@ -57,7 +58,7 @@ const TaskTableController = ({
           : item
       );
     } else {
-      updatedTasksData = [task, ...tasksData]; // Add new task to the top
+      updatedTasksData = [task, ...tasksData];
     }
 
     setTasksData(updatedTasksData);
@@ -66,12 +67,10 @@ const TaskTableController = ({
         (item) => item.status.toLowerCase() === activeTab.toLowerCase()
       )
     );
-    console.log(tasksData);
     sortData();
 
     const currentUrl = new URL(window.location.href);
     currentUrl.searchParams.delete('task_id');
-
     router.replace(currentUrl.toString());
     setTaskToEdit(undefined);
     setShowTaskModal(false);
@@ -106,8 +105,6 @@ const TaskTableController = ({
     setSelectedRowIndex(0);
   }, [searchParams]);
 
-  const [selectedRowIndex, setSelectedRowIndex] = useState(0);
-
   useEffect(() => {
     const fetchTasks = async () => {
       setLoading(true);
@@ -123,14 +120,21 @@ const TaskTableController = ({
 
   useEffect(() => {
     if (!activeTab) return;
-    const tabFilteredData = tasksData.filter(
-      (item) => item.status.toLowerCase() === activeTab.toLowerCase()
-    );
+
+    const priorityFilter = searchParams.get('priority') || '';
+
+    const tabFilteredData = tasksData.filter((item) => {
+      const matchesTab = item.status.toLowerCase() === activeTab.toLowerCase();
+      const matchesPriority =
+        priorityFilter === '' ||
+        item.priority.toLowerCase() === priorityFilter.toLowerCase();
+
+      return matchesTab && matchesPriority;
+    });
+
     setFilteredData(tabFilteredData);
-    if (tabFilteredData.length > 0) {
-      setDataCount(tabFilteredData.length);
-    }
-  }, [tasksData, activeTab]);
+    setDataCount(tabFilteredData.length);
+  }, [tasksData, activeTab, searchParams]);
 
   useEffect(() => {
     sortData();

@@ -24,7 +24,7 @@ const TaskTable = ({
 
   if (loading) {
     return (
-      <div className='flex flex-col mx-auto p-4 w-full h-full'>
+      <div className='flex flex-col mx-auto px-4 w-full h-full'>
         <div className='flex flex-row justify-between px-6 items-center h-8 mb-4'>
           <h2 className='font-medium font-serif text-lg bg-gray-300 rounded-md w-1/4 h-6 animate-pulse'></h2>
           <div className='p-2 w-24 bg-gray-300 rounded-lg animate-pulse'></div>
@@ -74,17 +74,17 @@ const TaskTable = ({
   }
 
   return (
-    <div className='flex flex-col mx-auto p-4 w-full h-full pb-12'>
+    <div className='flex flex-col mx-auto p-2 w-full h-full pb-12'>
       <div className='flex flex-row justify-between px-6 items-center'>
         <h2 className=' font-medium font-serif text-lg '>Open Task List</h2>
         <button
           onClick={addTask}
-          className='p-2 bg-blue-600 rounded-lg text-white hover:bg-blue-700 font-medium'
+          className='p-2 text-sm bg-blue-600 rounded-lg text-white hover:bg-blue-700 font-medium'
         >
           + Add new Task
         </button>
       </div>
-      <div className='border shadow-md my-4 overflow-auto h-full mb-10'>
+      <div className='border shadow-md my-4 overflow-auto h-full mb-28'>
         <div>
           <div className='bg-blue-600 text-white font-mono flex flex-row font-medium border uppercase p-2 gap-4'>
             <div className='w-24 text-center'>Id</div>

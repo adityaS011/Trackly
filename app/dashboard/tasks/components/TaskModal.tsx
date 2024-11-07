@@ -71,8 +71,14 @@ const TaskModal = ({
   };
 
   return (
-    <div className='fixed inset-0 flex items-center justify-end h-screen bg-gray-500 bg-opacity-50 z-50'>
-      <div className='bg-white p-6 shadow-lg w-2/5 h-full '>
+    <div
+      className='fixed inset-0  flex items-center justify-end h-screen bg-gray-500 bg-opacity-50 z-50'
+      onClick={onClose}
+    >
+      <div
+        className='bg-white animate-slideInRight p-6 shadow-lg w-2/5 h-full '
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className='flex flex-row justify-between items-center'>
           <h2 className='text-lg font-medium'>
             {task ? 'Edit Task' : 'Add New Task'}
