@@ -43,7 +43,7 @@
 
 <ol style="font-size: 1.15rem; line-height: 1.75;">
     <li>Clone the repo: <code>git clone https://github.com/adityaS011/taskManagement</code></li>
-    <li>Navigate to the project folder: <code>cd your-repo-name</code></li>
+    <li>Navigate to the project folder: <code>cd taskManagement</code></li>
     <li>Install dependencies: <code>npm install</code></li>
     <li>Run the development server: <code>npm run dev</code></li>
     <li>Open <code>http://localhost:3000</code> to view it in the browser.</li>
