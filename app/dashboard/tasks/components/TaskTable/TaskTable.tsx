@@ -113,7 +113,7 @@ const TaskTable = ({
             <div
               key={task.id}
               className={`flex bg-white flex-row hover:bg-slate-100 border p-2 gap-4 ${
-                selectedRowIndex === index ? 'bg-[#c8d0fa]' : ''
+                selectedRowIndex === index ? 'bg-[#dde3fc]' : ''
               }`}
               onClick={() => handleEditClick(task.id)}
             >

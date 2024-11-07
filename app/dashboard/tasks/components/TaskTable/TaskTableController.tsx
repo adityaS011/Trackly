@@ -96,6 +96,32 @@ const TaskTableController = ({
   };
 
   useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowUp') {
+        setSelectedRowIndex((prev) => Math.max(prev - 1, 0));
+      } else if (event.key === 'ArrowDown') {
+        setSelectedRowIndex((prev) => {
+          const maxIndex = filteredData.length - 1;
+          return Math.min(prev + 1, maxIndex);
+        });
+      } else if (event.key === 'Enter') {
+        const selectedTask = filteredData[selectedRowIndex];
+        if (selectedTask) {
+          handleEditClick(selectedTask.id);
+        }
+        if (showTaskModal) {
+          setShowTaskModal(false);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [filteredData, selectedRowIndex, handleEditClick]);
+
+  useEffect(() => {
     const tabParam = searchParams.get('tab') as TabsType;
     if (tabParam && TabsToShow.includes(tabParam)) {
       setActiveTab(tabParam);
