@@ -1,4 +1,4 @@
-import { Tasks, LabelType } from '@/types';
+import { Tasks, LabelType, TabsType } from '@/types';
 import React, { useState, useEffect } from 'react';
 import Comments from './Comments';
 import { BiX } from 'react-icons/bi';
@@ -16,7 +16,7 @@ const TaskModal = ({
     id: task?.id || crypto.randomUUID(),
     name: task?.name || '',
     assignee: task?.assignee || '',
-    status: task?.status || '',
+    status: task?.status || 'open',
     labels: task?.labels || '',
     created_at: task?.created_at || new Date().toISOString(),
     updated_at: task?.updated_at || new Date().toISOString(),
@@ -24,7 +24,9 @@ const TaskModal = ({
   });
 
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-  const [statusToUpdate, setStatusToUpdate] = useState<string>(formData.status);
+  const [statusToUpdate, setStatusToUpdate] = useState<TabsType>(
+    formData.status
+  );
   const [selectedTab, setSelectedTab] = useState<'task' | 'comments'>('task'); // State to manage the active tab
 
   useEffect(() => {
@@ -50,8 +52,8 @@ const TaskModal = ({
     }));
   };
 
-  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newStatus = e.target.value;
+  const handleStatusChange = (val: string) => {
+    const newStatus = val as TabsType;
     setStatusToUpdate(newStatus);
     setIsConfirmModalOpen(true);
   };
@@ -171,12 +173,12 @@ const TaskModal = ({
                   id='status'
                   name='status'
                   value={statusToUpdate}
-                  onChange={handleStatusChange}
+                  onChange={(e) => handleStatusChange(e.target.value)}
                   className='w-full p-2 border rounded-md'
                 >
-                  <option value='Open'>Open</option>
-                  <option value='In Progress'>In Progress</option>
-                  <option value='Completed'>Completed</option>
+                  <option value='open'>Open</option>
+                  <option value='inprogress'>In Progress</option>
+                  <option value='completed'>Completed</option>
                 </select>
               </div>
               <div className='w-full'>
@@ -215,21 +217,21 @@ const TaskModal = ({
 
         {isConfirmModalOpen && (
           <div className='fixed shadow-md inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50'>
-            <div className='bg-white p-6 rounded-lg shadow-lg w-1/3'>
+            <div className='bg-white p-6 rounded-lg shadow-lg w-1/5 flex flex-col gap-4'>
               <h3 className='text-lg font-medium'>Confirm Status Change</h3>
               <p>
                 Are you sure you want to change the status to {statusToUpdate}?
               </p>
-              <div className='flex justify-between gap-2'>
+              <div className='flex  gap-4'>
                 <button
                   onClick={() => handleStatusConfirmation(true)}
-                  className='px-4 py-2 bg-blue-600 text-white rounded-md'
+                  className='px-4 py-2 w-full bg-blue-600 text-white rounded-md'
                 >
                   Proceed
                 </button>
                 <button
                   onClick={() => handleStatusConfirmation(false)}
-                  className='px-4 py-2 bg-red-500 text-white rounded-md'
+                  className='px-4 py-2 w-full bg-red-500 text-white rounded-md'
                 >
                   Cancel
                 </button>

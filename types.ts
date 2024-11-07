@@ -2,7 +2,7 @@ export type Tasks = {
   id: string;
   name: string;
   labels: string;
-  status: string;
+  status: TabsType;
   created_at: string;
   updated_at: string;
   priority: string;

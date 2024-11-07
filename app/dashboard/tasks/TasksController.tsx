@@ -1,14 +1,16 @@
-import React from 'react';
+'use client';
+import React, { useState } from 'react';
 import TaskTabs from './components/TaskTabs';
 import TaskFilters from './components/TaskFilters';
 import TaskTableController from './components/TaskTable/TaskTableController';
 
 const TasksController = () => {
+  const [dataCount, setDataCount] = useState<number | null>(null);
   return (
     <div className='flex flex-col h-full w-full bg-slate-100 p-4 '>
-      <TaskTabs />
+      <TaskTabs dataCount={dataCount} />
       <TaskFilters />
-      <TaskTableController />
+      <TaskTableController setDataCount={setDataCount} />
     </div>
   );
 };

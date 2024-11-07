@@ -6,13 +6,24 @@ import { TabsToShow } from '@/data';
 import { useRouter, useSearchParams } from 'next/navigation';
 import TaskModal from '../TaskModal';
 
-const TaskTableController = () => {
+const TaskTableController = ({
+  setDataCount,
+}: {
+  setDataCount: (val: number | null) => void;
+}) => {
   const [tasksData, setTasksData] = useState<Tasks[]>([]);
   const [filteredData, setFilteredData] = useState<Tasks[]>([]);
   const [taskToEdit, setTaskToEdit] = useState<Tasks>();
   const [loading, setLoading] = useState<boolean>(false);
   const [showTaskModal, setShowTaskModal] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<TabsType>('open');
+  const [sortConfig, setSortConfig] = useState<{
+    key: 'created_at' | 'updated_at';
+    direction: 'asc' | 'desc';
+  }>({
+    key: 'updated_at',
+    direction: 'desc',
+  });
   const searchParams = useSearchParams();
   const router = useRouter();
   const addTask = () => {
@@ -36,24 +47,53 @@ const TaskTableController = () => {
 
     router.replace(currentUrl.toString());
   };
+
   const handleAddTask = (task: Tasks) => {
+    let updatedTasksData;
     if (taskToEdit) {
-      setTasksData((prev) =>
-        prev.map((item) =>
-          item.id === taskToEdit.id
-            ? { ...item, ...task, updated_at: new Date().toISOString() }
-            : item
-        )
+      updatedTasksData = tasksData.map((item) =>
+        item.id === taskToEdit.id
+          ? { ...item, ...task, updated_at: new Date().toISOString() }
+          : item
       );
     } else {
-      setTasksData((prev) => [task, ...prev]);
+      updatedTasksData = [task, ...tasksData]; // Add new task to the top
     }
+
+    setTasksData(updatedTasksData);
+    setFilteredData(
+      updatedTasksData.filter(
+        (item) => item.status.toLowerCase() === activeTab.toLowerCase()
+      )
+    );
+    console.log(tasksData);
+    sortData();
+
     const currentUrl = new URL(window.location.href);
     currentUrl.searchParams.delete('task_id');
 
     router.replace(currentUrl.toString());
     setTaskToEdit(undefined);
     setShowTaskModal(false);
+  };
+
+  const sortData = () => {
+    const sortedData = [...filteredData].sort((a, b) => {
+      const dateA = new Date(a[sortConfig.key]);
+      const dateB = new Date(b[sortConfig.key]);
+      return sortConfig.direction === 'asc'
+        ? dateA.getTime() - dateB.getTime()
+        : dateB.getTime() - dateA.getTime();
+    });
+    setFilteredData(sortedData);
+  };
+
+  const handleSortClick = (key: 'created_at' | 'updated_at') => {
+    setSortConfig((prevState) => {
+      const newDirection =
+        prevState.key === key && prevState.direction === 'asc' ? 'desc' : 'asc';
+      return { key, direction: newDirection };
+    });
   };
 
   useEffect(() => {
@@ -69,35 +109,14 @@ const TaskTableController = () => {
   const [selectedRowIndex, setSelectedRowIndex] = useState(0);
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowUp') {
-        setSelectedRowIndex((prev) => Math.max(prev - 1, 0));
-      } else if (event.key === 'ArrowDown') {
-        setSelectedRowIndex((prev) => {
-          const maxIndex = filteredData.length - 1;
-          return Math.min(prev + 1, maxIndex);
-        });
-      } else if (event.key === 'Enter') {
-        const selectedTask = filteredData[selectedRowIndex];
-        if (selectedTask) {
-          handleEditClick(selectedTask.id);
-        }
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [filteredData, selectedRowIndex, handleEditClick]);
-
-  useEffect(() => {
     const fetchTasks = async () => {
       setLoading(true);
-      const response = await fetch('/api/tasks');
-      const data = await response.json();
-      setLoading(false);
-      setTasksData(data.tasks);
+      setTimeout(async () => {
+        const response = await fetch('/api/tasks');
+        const data = await response.json();
+        setLoading(false);
+        setTasksData(data.tasks);
+      }, 2000);
     };
     fetchTasks();
   }, []);
@@ -108,7 +127,14 @@ const TaskTableController = () => {
       (item) => item.status.toLowerCase() === activeTab.toLowerCase()
     );
     setFilteredData(tabFilteredData);
+    if (tabFilteredData.length > 0) {
+      setDataCount(tabFilteredData.length);
+    }
   }, [tasksData, activeTab]);
+
+  useEffect(() => {
+    sortData();
+  }, [sortConfig]);
 
   return (
     <div className='w-full h-full'>
@@ -118,6 +144,8 @@ const TaskTableController = () => {
         addTask={addTask}
         handleEditClick={handleEditClick}
         selectedRowIndex={selectedRowIndex}
+        onSort={handleSortClick}
+        sortConfig={sortConfig}
       />
       {showTaskModal && (
         <TaskModal

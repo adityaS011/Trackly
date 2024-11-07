@@ -4,7 +4,7 @@ import { TabsType } from '@/types';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
-const TaskTabs = () => {
+const TaskTabs = ({ dataCount }: { dataCount: number | null }) => {
   const [activeTab, setActiveTab] = useState<TabsType>('open');
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const router = useRouter();
@@ -49,14 +49,19 @@ const TaskTabs = () => {
         {TabsToShow.map((tab, index) => (
           <div
             key={tab}
-            className={`tab cursor-pointer hover:bg-blue-200 px-6 py-1 first-letter:uppercase ${
+            className={`tab cursor-pointer min-w-20 items-center flex flex-row gap-4 hover:bg-blue-200 px-6 py-1  ${
               index === selectedTabIndex
                 ? 'border-b-2 border-gray-700 font-semibold text-blue-600'
                 : ''
             }`}
             onClick={() => handleTabChange(index)}
           >
-            {tab}
+            <p className='first-letter:uppercase'>{tab}</p>
+            {index === selectedTabIndex && (
+              <p className='text-left text-xs py-0.5 px-1 rounded-full bg-green-200'>
+                {dataCount}
+              </p>
+            )}
           </div>
         ))}
         <p className='text-[#c2c2c2]  font-sans italic text-sm'>
