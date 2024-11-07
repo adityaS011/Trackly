@@ -42,7 +42,7 @@
 <p style="font-size: 1.15rem;">Follow the steps below to get the project running on your local machine:</p>
 
 <ol style="font-size: 1.15rem; line-height: 1.75;">
-    <li>Clone the repo: <code>git clone https://github.com/your-username/your-repo-name</code></li>
+    <li>Clone the repo: <code>git clone https://github.com//adityaS011/taskManagement></li>
     <li>Navigate to the project folder: <code>cd your-repo-name</code></li>
     <li>Install dependencies: <code>npm install</code></li>
     <li>Run the development server: <code>npm run dev</code></li>
