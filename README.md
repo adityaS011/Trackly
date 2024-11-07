@@ -19,7 +19,7 @@
 <h2 style="font-size: 2rem; font-weight: bold; margin-top: 2rem;">📸 Ideation/Approach</h2>
 
 
-<img src="https://github.com/adityaS011/DataVisuals/blob/main/public/approach.png" alt="Project Preview" style="width: 100%; border-radius: 10px; margin: 20px 0;" />
+<img src="https://github.com/adityaS011/taskManagement/blob/main/public/screenshot.png" alt="Project Preview" style="width: 100%; border-radius: 10px; margin: 20px 0;" />
 
 ---
 ---
