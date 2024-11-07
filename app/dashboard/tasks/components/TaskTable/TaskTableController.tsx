@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import TaskTable from './TaskTable';
 import { TabsType, Tasks } from '@/types';
 import { TabsToShow } from '@/data';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import TaskModal from '../TaskModal';
 
 const TaskTableController = () => {
@@ -14,27 +14,44 @@ const TaskTableController = () => {
   const [showTaskModal, setShowTaskModal] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<TabsType>('open');
   const searchParams = useSearchParams();
-
+  const router = useRouter();
   const addTask = () => {
     setShowTaskModal(true);
   };
-  const handleEditClick = (id: number) => {
-    console.log(id);
-    console.log(tasksData[id]);
+
+  const handleEditClick = (id: string) => {
     setShowTaskModal(true);
-    setTaskToEdit(tasksData[id]);
+
+    const task = tasksData.find((item) => item.id === id);
+    if (task) setTaskToEdit(task);
+    const currentUrl = new URL(window.location.href);
+    currentUrl.searchParams.set('task_id', id);
+
+    router.replace(currentUrl.toString());
+  };
+  const handleModalClose = () => {
+    setShowTaskModal(false);
+    const currentUrl = new URL(window.location.href);
+    currentUrl.searchParams.delete('task_id');
+
+    router.replace(currentUrl.toString());
   };
   const handleAddTask = (task: Tasks) => {
     if (taskToEdit) {
       setTasksData((prev) =>
         prev.map((item) =>
-          item.id === taskToEdit.id ? { ...item, ...task } : item
+          item.id === taskToEdit.id
+            ? { ...item, ...task, updated_at: new Date().toISOString() }
+            : item
         )
       );
     } else {
-      setTasksData((prev) => [...prev, task]);
+      setTasksData((prev) => [task, ...prev]);
     }
+    const currentUrl = new URL(window.location.href);
+    currentUrl.searchParams.delete('task_id');
 
+    router.replace(currentUrl.toString());
     setTaskToEdit(undefined);
     setShowTaskModal(false);
   };
@@ -43,9 +60,12 @@ const TaskTableController = () => {
     const tabParam = searchParams.get('tab') as TabsType;
     if (tabParam && TabsToShow.includes(tabParam)) {
       setActiveTab(tabParam);
+    } else {
+      setActiveTab('open');
     }
     setSelectedRowIndex(0);
   }, [searchParams]);
+
   const [selectedRowIndex, setSelectedRowIndex] = useState(0);
 
   useEffect(() => {
@@ -53,9 +73,15 @@ const TaskTableController = () => {
       if (event.key === 'ArrowUp') {
         setSelectedRowIndex((prev) => Math.max(prev - 1, 0));
       } else if (event.key === 'ArrowDown') {
-        setSelectedRowIndex((prev) => Math.min(prev + 1, tasksData.length - 1));
+        setSelectedRowIndex((prev) => {
+          const maxIndex = filteredData.length - 1;
+          return Math.min(prev + 1, maxIndex);
+        });
       } else if (event.key === 'Enter') {
-        handleEditClick(tasksData[selectedRowIndex].id);
+        const selectedTask = filteredData[selectedRowIndex];
+        if (selectedTask) {
+          handleEditClick(selectedTask.id);
+        }
       }
     };
 
@@ -63,11 +89,12 @@ const TaskTableController = () => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [tasksData, selectedRowIndex, handleEditClick]);
+  }, [filteredData, selectedRowIndex, handleEditClick]);
+
   useEffect(() => {
     const fetchTasks = async () => {
       setLoading(true);
-      const response = await fetch('/api/tasks'); // fetches mock data
+      const response = await fetch('/api/tasks');
       const data = await response.json();
       setLoading(false);
       setTasksData(data.tasks);
@@ -77,7 +104,6 @@ const TaskTableController = () => {
 
   useEffect(() => {
     if (!activeTab) return;
-    console.log(tasksData);
     const tabFilteredData = tasksData.filter(
       (item) => item.status.toLowerCase() === activeTab.toLowerCase()
     );
@@ -95,9 +121,7 @@ const TaskTableController = () => {
       />
       {showTaskModal && (
         <TaskModal
-          onClose={() => {
-            setShowTaskModal(false);
-          }}
+          onClose={() => handleModalClose()}
           onSubmit={handleAddTask}
           task={taskToEdit}
         />

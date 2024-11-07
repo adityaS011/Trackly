@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { Tasks } from '@/types';
 
 const TaskTable = ({
@@ -12,11 +11,11 @@ const TaskTable = ({
   loading: boolean;
   addTask: () => void;
   selectedRowIndex: number;
-  handleEditClick: (id: number) => void;
+  handleEditClick: (id: string) => void;
 }) => {
   if (loading) {
     return (
-      <div className='w-full h-full flex items-center justify-center animate-pulse p-4'>
+      <div className='w-full h-full flex items-center bg-gray-300 justify-center animate-pulse p-4'>
         Loading...
       </div>
     );
@@ -30,7 +29,7 @@ const TaskTable = ({
   }
 
   return (
-    <div className='flex flex-col mx-auto p-4 w-full h-full '>
+    <div className='flex flex-col mx-auto p-4 w-full h-full pb-12'>
       <div className='flex flex-row justify-between px-6 items-center'>
         <h2 className=' font-medium font-serif text-lg '>Open Task List</h2>
         <button
@@ -40,14 +39,17 @@ const TaskTable = ({
           + Add new Task
         </button>
       </div>
-      <div className='border shadow-md my-4'>
+      <div className='border shadow-md my-4 overflow-auto h-full mb-10'>
         <div>
-          <div className='bg-green-400 flex flex-row font-medium border p-2 pl-4 gap-2'>
-            <div className='w-96 '>Name</div>
-            <div className='w-36 text-center'>Labels</div>
-            <div className='w-52 text-center'>Created At</div>
-            <div className='w-52 text-center'>Updated At</div>
-            <div className='w-32 text-center'>Priority</div>
+          <div className='bg-blue-600 text-white font-mono flex flex-row font-medium border uppercase p-2  gap-4'>
+            <div className='w-24 text-center'>Id</div>
+            <div className='w-80 '>Name</div>
+            <div className='w-28 '>Status</div>
+            <div className='w-32 text-center'>Labels</div>
+            <div className='w-36 text-center'>Created At</div>
+            <div className='w-36 text-center'>Updated At</div>
+            <div className='text-left w-24'>Priority</div>
+            <div className='text-left w-24'>Assignee</div>
           </div>
         </div>
 
@@ -55,20 +57,26 @@ const TaskTable = ({
           {tasksData.map((task, index) => (
             <div
               key={task.id}
-              className={`flex bg-white flex-row hover:bg-slate-100 border p-2 pl-4 gap-2 ${
-                selectedRowIndex === index ? 'bg-blue-100' : ''
+              className={`flex bg-white flex-row hover:bg-slate-100 border p-2  gap-4 ${
+                selectedRowIndex === index ? 'bg-[#ebebfe]' : ''
               }`}
-              onClick={() => handleEditClick(task.id - 1)}
+              onClick={() => handleEditClick(task.id)}
             >
-              <div className='w-96'>{task.name}</div>
-              <div className='text-center w-36'>{task.labels.join(', ')}</div>
-              <div className='text-center w-52'>
-                {new Date(task.created_at).toLocaleString()}
+              <div className='w-24 text-center'>{`TSK${task.id
+                .toString()
+                .substring(0, 4)
+                .toUpperCase()}`}</div>
+              <div className='w-80'>{task.name}</div>
+              <div className='w-28'>{task.status}</div>
+              <div className='text-center w-32'>{task.labels}</div>
+              <div className='text-center w-36'>
+                {new Date(task.created_at).toLocaleDateString()}
               </div>
-              <div className='text-center w-52'>
-                {new Date(task.updated_at).toLocaleString()}
+              <div className='text-center w-36'>
+                {new Date(task.updated_at).toLocaleDateString()}
               </div>
-              <div className='text-center w-32'>{task.priority}</div>
+              <div className='text-left w-24'>{task.priority}</div>
+              <div className='text-left w-24'>{task.assignee}</div>
             </div>
           ))}
         </div>

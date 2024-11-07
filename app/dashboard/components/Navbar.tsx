@@ -28,12 +28,12 @@ const Navbar = () => {
   };
   return (
     <div className='flex flex-row justify-between w-full py-2 px-6 items-center bg-slate-200 min-h-14 border-b'>
-      <div className='flex flex-row gap-2 items-center font-medium bg-green-300 px-2 py-1 rounded-md shadow-md text-lg'>
+      <div className='flex flex-row gap-2 items-center font-medium bg-blue-300 px-2 py-1 rounded-md shadow-md text-lg'>
         <BiTask className='h-5 w-5 ' />
-        <p>Task X</p>
+        <p>Super TasK</p>
       </div>
       <div
-        className='flex flex-row gap-2 items-center bg-green-300 rounded-lg px-2 py-1 hover:bg-green-400 cursor-pointer'
+        className='flex flex-row gap-2 items-center bg-blue-300 rounded-lg px-2 py-1 hover:bg-blue-400 cursor-pointer'
         onClick={() => {
           setDropdownState(!dropdownState);
         }}
