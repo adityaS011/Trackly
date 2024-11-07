@@ -62,18 +62,6 @@
     <li><strong>Keyboard traversing in focus modal:</strong> Right/Left to navigate, keys 1-3 for status actions.</li>
 </ul>
 
-<ul style="font-size: 1.15rem; line-height: 1.75;">
-    <li>Filters support in the task table.</li>
-    <li>Task counts displayed in each tab.</li>
-    <li>Inline actions on tasks directly from the table.</li>
-    <li>Sorting tasks by creation/update timestamp.</li>
-    <li>Option to report bugs in existing Superdm products.</li>
-</ul>
-<p><strong>Tabs:</strong> The interface will have three tabs to categorize tasks by status: <em>Open</em>, <em>In Progress</em>, and <em>Closed</em>. Only one tab will be displayed at a time, ensuring focused task views.</p>
-
-<p><strong>Task Listings:</strong> Each tab displays its own list of tasks in a table format. Every row in the table represents a task with columns for details such as Priority, ID, Status, Labels, Name, Due Date, Created, and Assignee. Infinite scrolling will be implemented for smooth navigation through tasks.</p>
-
-<p><strong>Keyboard Traversing in Table:</strong> Users can navigate through the rows using the Up and Down arrow keys, with the Enter key opening the selected task for more details.</p>
 
 <p><strong>Task in Focus:</strong> When a task is selected (clicked or Entered), it opens in a modal, providing an expanded view of the task details. The status of the task will be shown and can be modified through a dropdown. This modal supports two key functions:</p>
 <ul style="font-size: 1.15rem; line-height: 1.75;">
