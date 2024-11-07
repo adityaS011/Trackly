@@ -63,7 +63,7 @@
 </ul>
 
 <ul style="font-size: 1.15rem; line-height: 1.75;">
-    <li>Filters and search support in the task table.</li>
+    <li>Filters support in the task table.</li>
     <li>Task counts displayed in each tab.</li>
     <li>Inline actions on tasks directly from the table.</li>
     <li>Sorting tasks by creation/update timestamp.</li>
