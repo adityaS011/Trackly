@@ -5,15 +5,6 @@
 <p align="center" style="font-size: 1.25rem;">
     <i>✨ Efficient Task Management ✨</i>
 </p>
-
----
-
-<h2 style="font-size: 2rem; font-weight: bold; margin-top: 2rem;">📸 Ideation/Approach</h2>
-
-
-<img src="https://github.com/adityaS011/taskManagement/blob/main/public/screenshot.png" alt="Project Preview" style="width: 100%; border-radius: 10px; margin: 20px 0;" />
-
----
 ---
 
 <h2 style="font-size: 2rem; font-weight: bold; margin-top: 2rem;">📸 Project Preview</h2>
@@ -113,6 +104,3 @@
 <p style="font-size: 1.15rem;">This project is licensed under the MIT License - see the <a href="LICENSE">LICENSE</a> file for details.</p>
 
 ---
-
-<h2 style="font-size: 2rem; font-weight: bold; margin-top: 2rem;">✨ Acknowledgements</h2>
-<p style="font-size: 1.15rem;">Huge thanks to the <a href="https://reactjs.org/">React</a>, <a href="https://recharts.org/en-US/">Recharts</a>, and <a href="https://github.com/">GitHub</a> communities!</p>
