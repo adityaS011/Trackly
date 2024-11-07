@@ -112,9 +112,11 @@ const TaskTable = ({
           {tasksData.map((task, index) => (
             <div
               key={task.id}
-              className={`flex bg-white flex-row hover:bg-slate-100 border p-2 gap-4 ${
-                selectedRowIndex === index ? 'bg-[#c2ccf6]' : ''
-              }`}
+              className={`flex bg-white flex-row hover:bg-slate-100 border p-2 gap-4 `}
+              style={{
+                backgroundColor:
+                  selectedRowIndex === index ? '#d5ddfc' : 'transparent',
+              }}
               onClick={() => handleEditClick(task.id)}
             >
               <div className='w-24 text-center'>{`TSK${task.id
