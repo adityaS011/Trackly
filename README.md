@@ -1,9 +1,9 @@
 <h1 align="center" style="font-size: 3rem; font-weight: bold; margin-bottom: 1.5rem;">
-    📊 Welcome to React Chart Project!
+    📊 Super TasK
 </h1>
 
 <p align="center" style="font-size: 1.25rem;">
-    <i>✨ Visualizing data with React and Recharts! ✨</i>
+    <i>✨ Efficient Task Management ✨</i>
 </p>
 
 <div align="center">
@@ -36,7 +36,7 @@
 
 <ul style="font-size: 1.15rem; line-height: 1.75;">
     <li><strong>React.js</strong>: For building interactive UIs.</li>
-    <li><strong>Recharts</strong>: For creating dynamic, responsive charts.</li>
+    <li><strong>Next.js</strong>: For creating dynamic routes and navigations</li>
     <li><strong>API Integration Layer</strong>: To fetch and manage data seamlessly.</li>
     <li><strong>TypeScript</strong> (optional): For enhanced type safety and development efficiency.</li>
 </ul>
@@ -61,13 +61,45 @@
 
 <h2 style="font-size: 2rem; font-weight: bold; margin-top: 2rem;">🎨 Features</h2>
 
+
 <ul style="font-size: 1.15rem; line-height: 1.75;">
-    <li>🌈 Fully responsive UI with interactive charts.</li>
-    <li>⚡️ Fast performance with optimized data fetching.</li>
-    <li>🔄 Seamless integration with REST APIs for real-time data updates.</li>
-    <li>📊 Dynamic charts created using Recharts for visual data representation.</li>
-    <li>🎯 Scalable and maintainable folder structure.</li>
+    <li><strong>Tabs:</strong> Three task status tabs: Open, In Progress, and Closed.</li>
+    <li><strong>Listing tasks:</strong> Each tab lists tasks in a table with infinite scroll.</li>
+    <li><strong>Keyboard traversing in table:</strong> Up/Down to navigate, Enter to open task.</li>
+    <li><strong>Task in focus:</strong> Opens task in modal with details, comments, and status change options.</li>
+    <li><strong>Keyboard traversing in focus modal:</strong> Right/Left to navigate, keys 1-3 for status actions.</li>
 </ul>
+
+<ul style="font-size: 1.15rem; line-height: 1.75;">
+    <li>Filters and search support in the task table.</li>
+    <li>Task counts displayed in each tab.</li>
+    <li>Inline actions on tasks directly from the table.</li>
+    <li>Sorting tasks by creation/update timestamp.</li>
+    <li>Option to report bugs in existing Superdm products.</li>
+</ul>
+<p><strong>Tabs:</strong> The interface will have three tabs to categorize tasks by status: <em>Open</em>, <em>In Progress</em>, and <em>Closed</em>. Only one tab will be displayed at a time, ensuring focused task views.</p>
+
+<p><strong>Task Listings:</strong> Each tab displays its own list of tasks in a table format. Every row in the table represents a task with columns for details such as Priority, ID, Status, Labels, Name, Due Date, Created, and Assignee. Infinite scrolling will be implemented for smooth navigation through tasks.</p>
+
+<p><strong>Keyboard Traversing in Table:</strong> Users can navigate through the rows using the Up and Down arrow keys, with the Enter key opening the selected task for more details.</p>
+
+<p><strong>Task in Focus:</strong> When a task is selected (clicked or Entered), it opens in a modal, providing an expanded view of the task details. The status of the task will be shown and can be modified through a dropdown. This modal supports two key functions:</p>
+<ul style="font-size: 1.15rem; line-height: 1.75;">
+    <li>Adding comments: A comment input box will allow users to add new comments, with an API call made to fetch comments when the task is initially opened.</li>
+    <li>Changing task status: Users can change the task status via the dropdown. When a status change is triggered, a confirmation modal appears with options to <em>Proceed</em> or <em>Cancel</em>. Once confirmed, the task is removed from the current list while the modal remains in focus mode until data is refreshed.</li>
+</ul>
+
+<p><strong>Keyboard Traversing in Focus Modal:</strong> The modal supports keyboard navigation with Right and Left arrow keys to traverse tasks in focus mode. Additionally, shortcut keys are available for quick status changes: 1 for Open, 2 for In Progress, and 3 for Closed.</p>
+
+<p><strong>Additional Features:</strong></p>
+<ul style="font-size: 1.15rem; line-height: 1.75;">
+    <li>Filter and search support within the table for easy task retrieval.</li>
+    <li>Task counts displayed and maintained in tabs.</li>
+    <li>Inline actions on tasks directly from the table view.</li>
+    <li>Sorting functionality based on creation or update timestamps.</li>
+    <li>Potential for identifying and reporting bugs within existing Superdm products.</li>
+</ul>
+
 
 ---
 
