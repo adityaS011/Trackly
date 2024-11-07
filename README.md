@@ -6,14 +6,6 @@
     <i>✨ Efficient Task Management ✨</i>
 </p>
 
-<div align="center">
-    <a href="https://reactjs.org/" style="text-decoration: none;">
-        <img src="https://img.shields.io/badge/React.js-61DAFB?style=for-the-badge&logo=react&logoColor=white" alt="React Badge"/>
-    </a>
-    <a href="https://recharts.org/en-US/" style="text-decoration: none;">
-        <img src="https://img.shields.io/badge/Recharts-888888?style=for-the-badge&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAE4AAABmCAIAAAD7jZy1AAAAOXRFWHRTb2Z0d2FyZQBNYXR0aG9vbnJhbGUgQ29yZSAyMy4zLjExOCwgaHR0cHM6Ly9tYXR0aG9vbi5vcmcvP1glPTAAAAJcEhZcwAAFBASFnoRBG5VAAAAB3RJTUUH5wYFJh4OjXTyZAAAAAElFTkSuQmCC" alt="Recharts Badge"/>
-    </a>
-</div>
 ---
 
 <h2 style="font-size: 2rem; font-weight: bold; margin-top: 2rem;">📸 Ideation/Approach</h2>
