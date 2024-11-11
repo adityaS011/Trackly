@@ -17,6 +17,8 @@ const TaskTableController = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [showTaskModal, setShowTaskModal] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<TabsType>('open');
+  const [currentActiveRowIndex, setcurrentActiveRowIndex] = useState(0);
+  const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
   const [sortConfig, setSortConfig] = useState<{
     key: 'created_at' | 'updated_at';
     direction: 'asc' | 'desc';
@@ -26,7 +28,6 @@ const TaskTableController = ({
   });
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [selectedRowIndex, setSelectedRowIndex] = useState(0);
 
   const addTask = () => {
     setShowTaskModal(true);
@@ -98,14 +99,14 @@ const TaskTableController = ({
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'ArrowUp') {
-        setSelectedRowIndex((prev) => Math.max(prev - 1, 0));
+        setcurrentActiveRowIndex((prev) => Math.max(prev - 1, 0));
       } else if (event.key === 'ArrowDown') {
-        setSelectedRowIndex((prev) => {
+        setcurrentActiveRowIndex((prev) => {
           const maxIndex = filteredData.length - 1;
           return Math.min(prev + 1, maxIndex);
         });
       } else if (event.key === 'Enter') {
-        const selectedTask = filteredData[selectedRowIndex];
+        const selectedTask = filteredData[currentActiveRowIndex];
         if (selectedTask) {
           handleEditClick(selectedTask.id);
         }
@@ -119,16 +120,22 @@ const TaskTableController = ({
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [filteredData, selectedRowIndex, handleEditClick]);
+  }, [filteredData, currentActiveRowIndex, handleEditClick]);
 
   useEffect(() => {
     const tabParam = searchParams.get('tab') as TabsType;
+    const taskIdParam = searchParams.get('task_id');
+    if (taskIdParam) {
+      setSelectedRowId(taskIdParam);
+    } else {
+      setSelectedRowId(null);
+    }
     if (tabParam && TabsToShow.includes(tabParam)) {
       setActiveTab(tabParam);
     } else {
       setActiveTab('open');
     }
-    setSelectedRowIndex(0);
+    setcurrentActiveRowIndex(0);
   }, [searchParams]);
 
   useEffect(() => {
@@ -167,13 +174,14 @@ const TaskTableController = ({
   }, [sortConfig]);
 
   return (
-    <div className='w-full h-full'>
+    <div className='w-full  h-full'>
       <TaskTable
         tasksData={filteredData}
         loading={loading}
         addTask={addTask}
         handleEditClick={handleEditClick}
-        selectedRowIndex={selectedRowIndex}
+        currentActiveRowIndex={currentActiveRowIndex}
+        selectedRowId={selectedRowId}
         onSort={handleSortClick}
         sortConfig={sortConfig}
       />

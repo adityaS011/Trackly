@@ -7,7 +7,7 @@ import TaskTableController from './components/TaskTable/TaskTableController';
 const TasksController = () => {
   const [dataCount, setDataCount] = useState<number | null>(null);
   return (
-    <div className='flex flex-col h-full w-full bg-slate-100 p-2 gap-2'>
+    <div className='flex flex-col h-full w-full bg-[#fffcfc] py-2 gap-2'>
       <TaskTabs dataCount={dataCount} />
       <TaskFilters />
       <TaskTableController setDataCount={setDataCount} />

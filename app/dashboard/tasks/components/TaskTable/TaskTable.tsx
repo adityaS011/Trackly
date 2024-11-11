@@ -1,18 +1,21 @@
 import { Tasks } from '@/types';
+import cn from '@/app/utils/cn';
 
 const TaskTable = ({
   tasksData,
   loading,
   addTask,
   handleEditClick,
-  selectedRowIndex,
+  selectedRowId,
+  currentActiveRowIndex,
   onSort,
   sortConfig,
 }: {
   tasksData: Tasks[];
   loading: boolean;
   addTask: () => void;
-  selectedRowIndex: number;
+  selectedRowId: string | null;
+  currentActiveRowIndex: number;
   handleEditClick: (id: string) => void;
   onSort: (key: 'created_at' | 'updated_at') => void;
   sortConfig: { key: 'created_at' | 'updated_at'; direction: 'asc' | 'desc' };
@@ -112,11 +115,13 @@ const TaskTable = ({
           {tasksData.map((task, index) => (
             <div
               key={task.id}
-              className={`flex bg-white flex-row hover:bg-slate-100 border p-2 gap-4 `}
-              style={{
-                backgroundColor:
-                  selectedRowIndex === index ? '#d5ddfc' : 'transparent',
-              }}
+              className={cn(
+                'flex bg-white flex-row border p-2 gap-4 cursor-pointer',
+                currentActiveRowIndex === index && !selectedRowId
+                  ? 'bg-indigo-200'
+                  : 'hover:bg-slate-100',
+                selectedRowId === task.id ? 'bg-blue-200' : ''
+              )}
               onClick={() => handleEditClick(task.id)}
             >
               <div className='w-24 text-center'>{`TSK${task.id
