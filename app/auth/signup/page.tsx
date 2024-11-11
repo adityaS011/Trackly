@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getUser, saveUser } from '@/utils/auth';
+import { useAuth } from '@/customHooks/useAuth';
 
 const Signup = () => {
   const router = useRouter();
@@ -10,6 +10,7 @@ const Signup = () => {
     email: '',
     password: '',
   });
+  const { saveUser, getUser } = useAuth();
 
   const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();

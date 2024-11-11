@@ -1,12 +1,12 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getUser, validateLogin } from '@/utils/auth';
+import { useAuth } from '@/customHooks/useAuth';
 
 const Login = () => {
   const router = useRouter();
   const [formData, setFormData] = useState({ username: '', password: '' });
-
+  const { validateLogin, getUser } = useAuth();
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateLogin(formData.username, formData.password)) {
