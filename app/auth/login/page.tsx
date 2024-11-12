@@ -25,7 +25,12 @@ const Login = () => {
         className='md:w-1/3 w-fit mx-4 md:mx-1 bg-gray-100 p-8 rounded shadow-md'
         onSubmit={handleLogin}
       >
-        <h2 className='text-2xl font-bold mb-6'>Log In</h2>
+        <h2 className='text-2xl font-bold mb-6 flex flex-row gap-3 items-center'>
+          Log In
+          <p className=' text-sm text-gray-500 font-light'>
+            (Access keys: admin, admin)
+          </p>
+        </h2>
         <input
           className='w-full p-2 mb-4 border'
           type='text'
