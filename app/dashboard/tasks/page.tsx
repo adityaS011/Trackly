@@ -15,7 +15,7 @@ const page = () => {
   }, []);
 
   return (
-    <div className='px-8 mx-auto min-w-[900px] w-fit flex flex-grow'>
+    <div className=' mx-auto max-w-[1150px]  w-full flex flex-grow'>
       <Suspense>
         <TasksController />
       </Suspense>

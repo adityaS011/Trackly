@@ -7,7 +7,7 @@ const page = () => {
   useEffect(() => {
     router.push('/dashboard/tasks');
   }, []);
-  return null;
+  return <div></div>;
 };
 
 export default page;

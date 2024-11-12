@@ -112,6 +112,7 @@ const TaskTableController = ({
         }
         if (showTaskModal) {
           setShowTaskModal(false);
+          setSelectedRowId(null);
         }
       }
     };
@@ -135,7 +136,6 @@ const TaskTableController = ({
     } else {
       setActiveTab('open');
     }
-    setcurrentActiveRowIndex(0);
   }, [searchParams]);
 
   useEffect(() => {

@@ -33,7 +33,7 @@ const TaskTable = ({
           <div className='p-2 w-24 bg-gray-300 rounded-lg animate-pulse'></div>
         </div>
         <div className='border shadow-md overflow-auto'>
-          <div className='bg-blue-600 text-white font-mono flex flex-row font-medium border uppercase p-2  gap-4'>
+          <div className='bg-blue-600 text-white font-mono flex flex-row font-medium border uppercase p-2 gap-4'>
             {[
               'Id',
               'Name',
@@ -55,7 +55,7 @@ const TaskTable = ({
               className='flex bg-gray-100 flex-row border p-2 gap-4 animate-pulse'
             >
               <div className='w-24 h-8 bg-gray-300 rounded-md'></div>
-              <div className='w-80 h-8 bg-gray-300 rounded-md'></div>
+              <div className='flex-1 h-8 bg-gray-300 rounded-md'></div>
               <div className='w-28 h-8 bg-gray-300 rounded-md'></div>
               <div className='w-32 h-8 bg-gray-300 rounded-md'></div>
               <div className='w-36 h-8 bg-gray-300 rounded-md'></div>
@@ -68,6 +68,7 @@ const TaskTable = ({
       </div>
     );
   }
+
   if (!tasksData) {
     return (
       <div className='w-full h-full flex items-center justify-center'>
@@ -79,7 +80,7 @@ const TaskTable = ({
   return (
     <div className='flex flex-col mx-auto p-2 w-full h-full pb-12'>
       <div className='flex flex-row justify-between px-6 items-center'>
-        <h2 className=' font-medium font-serif text-lg '>Open Task List</h2>
+        <h2 className='font-medium font-serif text-lg'>Open Task List</h2>
         <button
           onClick={addTask}
           className='p-2 text-sm bg-blue-600 rounded-lg text-white hover:bg-blue-700 font-medium'
@@ -90,55 +91,63 @@ const TaskTable = ({
       <div className='border shadow-md my-4 overflow-auto h-full mb-28'>
         <div>
           <div className='bg-blue-600 text-white font-mono flex flex-row font-medium border uppercase p-2 gap-4'>
-            <div className='w-24 text-center'>Id</div>
-            <div className='w-80 '>Name</div>
-            <div className='w-28 '>Status</div>
-            <div className='w-32 text-center'>Labels</div>
+            <div className='w-1/12 text-center'>Id</div>
+            <div className='w-2/12'>Name</div>
+            <div className='w-[5%]'>Status</div>
+            <div className='w-1/6 text-center'>Labels</div>
             <div
-              className='w-36 text-center selection:bg-transparent cursor-pointer'
+              className='w-1/6 text-center cursor-pointer'
               onClick={() => onSort('created_at')}
             >
               Created At {getArrow('created_at')}
             </div>
             <div
-              className='w-36 text-center selection:bg-transparent cursor-pointer'
+              className='w-1/6 text-center cursor-pointer'
               onClick={() => onSort('updated_at')}
             >
               Updated At {getArrow('updated_at')}
             </div>
-            <div className='text-left w-24'>Priority</div>
-            <div className='text-left w-24'>Assignee</div>
+            <div className='w-1/12'>Priority</div>
+            <div className='w-[10%]'>Assignee</div>
           </div>
         </div>
-
         <div>
           {tasksData.map((task, index) => (
             <div
               key={task.id}
               className={cn(
-                'flex bg-white flex-row border p-2 gap-4 cursor-pointer',
+                'flex bg-inherit flex-row border p-2 gap-4 cursor-pointer',
                 currentActiveRowIndex === index && !selectedRowId
-                  ? 'bg-indigo-200'
+                  ? ' font-medium'
                   : 'hover:bg-slate-100',
-                selectedRowId === task.id ? 'bg-blue-200' : ''
+                selectedRowId === task.id ? '' : ''
               )}
+              style={{
+                backgroundColor: selectedRowId
+                  ? selectedRowId === task.id
+                    ? '#a5c7fc'
+                    : ''
+                  : currentActiveRowIndex === index
+                  ? '#e1ebfb'
+                  : '',
+              }}
               onClick={() => handleEditClick(task.id)}
             >
-              <div className='w-24 text-center'>{`TSK${task.id
+              <div className='w-1/12 text-center'>{`TSK${task.id
                 .toString()
                 .substring(0, 4)
                 .toUpperCase()}`}</div>
-              <div className='w-80'>{task.name}</div>
-              <div className='w-28'>{task.status}</div>
-              <div className='text-center w-32'>{task.labels}</div>
-              <div className='text-center w-36'>
+              <div className='w-2/12'>{task.name}</div>
+              <div className='w-[5%]'>{task.status}</div>
+              <div className='text-center w-1/6'>{task.labels}</div>
+              <div className='text-center w-1/6'>
                 {new Date(task.created_at).toLocaleDateString()}
               </div>
-              <div className='text-center w-36'>
+              <div className='text-center w-1/6'>
                 {new Date(task.updated_at).toLocaleDateString()}
               </div>
-              <div className='text-left w-24'>{task.priority}</div>
-              <div className='text-left w-24'>{task.assignee}</div>
+              <div className='w-1/12'>{task.priority}</div>
+              <div className='w-[10%]'>{task.assignee}</div>
             </div>
           ))}
         </div>

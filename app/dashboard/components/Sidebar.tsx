@@ -21,7 +21,7 @@ const Sidebar = () => {
             handleClick('/dashboard');
           }}
         >
-          <RxDashboard /> Dashboard
+          <RxDashboard /> Home
         </p>
         <p
           className='flex flex-row gap-2 p-2 items-center tracking-wide rounded-md hover:bg-slate-300 cursor-pointer'
