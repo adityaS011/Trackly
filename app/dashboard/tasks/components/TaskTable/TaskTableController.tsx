@@ -70,11 +70,8 @@ const TaskTableController = ({
     );
     sortData();
 
-    const currentUrl = new URL(window.location.href);
-    currentUrl.searchParams.delete('task_id');
-    router.replace(currentUrl.toString());
+    handleModalClose();
     setTaskToEdit(undefined);
-    setShowTaskModal(false);
   };
 
   const sortData = () => {
@@ -111,7 +108,7 @@ const TaskTableController = ({
           handleEditClick(selectedTask.id);
         }
         if (showTaskModal) {
-          setShowTaskModal(false);
+          handleModalClose();
           setSelectedRowId(null);
         }
       }
