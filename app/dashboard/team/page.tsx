@@ -1,7 +1,6 @@
 'use client';
 import { Tasks } from '@/types';
 import React, { useEffect, useState } from 'react';
-import { CgAtlasian } from 'react-icons/cg';
 
 const page = () => {
   const [teamData, setTeamData] = useState<Tasks[]>();

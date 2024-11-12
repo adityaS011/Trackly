@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 
@@ -11,7 +11,9 @@ const layout = ({
     <div className='flex flex-col h-screen w-screen overflow-hidden'>
       <Navbar />
       <div className='flex flex-row h-full w-full '>
-        <Sidebar />
+        <Suspense>
+          <Sidebar />
+        </Suspense>
         {children}
       </div>
     </div>
