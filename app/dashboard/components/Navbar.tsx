@@ -27,7 +27,7 @@ const Navbar = () => {
     router.push('/auth/login');
   };
   return (
-    <div className='flex flex-row justify-between w-full py-2 px-6 items-center bg-blue-50 min-h-14 border-b'>
+    <div className='flex flex-row justify-between w-full py-2 px-6 items-center bg-blue-50 min-h-14 '>
       <div className='flex flex-row gap-2 items-center font-medium bg-blue-300 px-2 py-1 rounded-md shadow-md text-lg'>
         <BiTask className='h-5 w-5 ' />
         <p>Super TasK</p>

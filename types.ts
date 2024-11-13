@@ -5,6 +5,7 @@ export type Tasks = {
   status: TabsType;
   created_at: string;
   updated_at: string;
+  tasks: string[];
   priority: string;
   assignee: string;
 };

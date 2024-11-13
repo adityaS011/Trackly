@@ -16,7 +16,7 @@ const Sidebar = () => {
     <div className='bg-blue-50 border-e w-52 h-full'>
       <div className='px-4 pt-6 flex flex-col gap-2 '>
         <p
-          className='flex flex-row gap-2 p-2 items-center tracking-wide rounded-md hover:bg-slate-300 cursor-pointer'
+          className='flex flex-row gap-2 p-2 items-center tracking-wide rounded-md hover:bg-blue-200 cursor-pointer'
           onClick={() => {
             handleClick('/dashboard');
           }}
@@ -24,7 +24,7 @@ const Sidebar = () => {
           <RxDashboard /> Home
         </p>
         <p
-          className='flex flex-row gap-2 p-2 items-center tracking-wide rounded-md hover:bg-slate-300 cursor-pointer'
+          className='flex flex-row gap-2 p-2 items-center tracking-wide rounded-md hover:bg-blue-200 cursor-pointer'
           onClick={() => {
             handleClick('/dashboard/tasks');
           }}
@@ -32,7 +32,7 @@ const Sidebar = () => {
           <GoTasklist /> Tasks
         </p>
         <p
-          className='flex flex-row gap-2 p-2 items-center tracking-wide rounded-md hover:bg-slate-300 cursor-pointer'
+          className='flex flex-row gap-2 p-2 items-center tracking-wide rounded-md hover:bg-blue-200 cursor-pointer'
           onClick={() => {
             handleClick('/dashboard/team');
           }}
