@@ -1,14 +1,14 @@
 'use client';
 import { TabsToShow } from '@/data';
 import { TabsType } from '@/types';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 const TaskTabs = ({ dataCount }: { dataCount: number | null }) => {
   const [activeTab, setActiveTab] = useState<TabsType>('open');
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const router = useRouter();
-
+  const searchParams = useSearchParams();
   const handleTabChange = (index: number) => {
     setSelectedTabIndex(index);
     setActiveTab(TabsToShow[index]);
@@ -41,7 +41,7 @@ const TaskTabs = ({ dataCount }: { dataCount: number | null }) => {
       setSelectedTabIndex(index);
       setActiveTab(tabParam);
     }
-  }, []);
+  }, [searchParams]);
 
   return (
     <div className='flex flex-row border-b gap-2 px-2 border-gray-300'>

@@ -16,7 +16,7 @@ const TaskTable = ({
   addTask: () => void;
   selectedRowId: string | null;
   currentActiveRowIndex: number;
-  handleEditClick: (id: string) => void;
+  handleEditClick: (id: string, index?: number) => void;
   onSort: (key: 'created_at' | 'updated_at') => void;
   sortConfig: { key: 'created_at' | 'updated_at'; direction: 'asc' | 'desc' };
 }) => {
@@ -119,8 +119,7 @@ const TaskTable = ({
                 'flex bg-inherit flex-row border p-2 gap-4 cursor-pointer',
                 currentActiveRowIndex === index && !selectedRowId
                   ? ' font-medium'
-                  : 'hover:bg-slate-100',
-                selectedRowId === task.id ? '' : ''
+                  : 'hover:bg-slate-100'
               )}
               style={{
                 backgroundColor: selectedRowId
@@ -131,7 +130,7 @@ const TaskTable = ({
                   ? '#e1ebfb'
                   : '',
               }}
-              onClick={() => handleEditClick(task.id)}
+              onClick={() => handleEditClick(task.id, index)}
             >
               <div className='w-1/12 text-center'>{`TSK${task.id
                 .toString()

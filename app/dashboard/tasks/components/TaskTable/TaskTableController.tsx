@@ -18,6 +18,7 @@ const TaskTableController = ({
   const [showTaskModal, setShowTaskModal] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<TabsType>('open');
   const [currentActiveRowIndex, setcurrentActiveRowIndex] = useState(0);
+  const [visibleRange, setVisibleRange] = useState({ start: 0, end: 11 });
   const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
   const [sortConfig, setSortConfig] = useState<{
     key: 'created_at' | 'updated_at';
@@ -33,8 +34,11 @@ const TaskTableController = ({
     setShowTaskModal(true);
   };
 
-  const handleEditClick = (id: string) => {
+  const handleEditClick = (id: string, index?: number) => {
     setShowTaskModal(true);
+    if (index !== undefined) {
+      setcurrentActiveRowIndex(index);
+    }
     const task = tasksData.find((item) => item.id === id);
     if (task) setTaskToEdit(task);
 
@@ -93,14 +97,28 @@ const TaskTableController = ({
     });
   };
 
+  const updateVisibleRange = (index: number) => {
+    if (index < visibleRange.start) {
+      setVisibleRange({ start: index, end: index + 11 });
+    } else if (index >= visibleRange.end) {
+      setVisibleRange({ start: index - 10, end: index + 1 });
+    }
+  };
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'ArrowUp') {
-        setcurrentActiveRowIndex((prev) => Math.max(prev - 1, 0));
+        setcurrentActiveRowIndex((prev) => {
+          const newIndex = Math.max(prev - 1, 0);
+          updateVisibleRange(newIndex);
+          return newIndex;
+        });
       } else if (event.key === 'ArrowDown') {
         setcurrentActiveRowIndex((prev) => {
           const maxIndex = filteredData.length - 1;
-          return Math.min(prev + 1, maxIndex);
+          const newIndex = Math.min(prev + 1, maxIndex);
+          updateVisibleRange(newIndex);
+          return newIndex;
         });
       } else if (event.key === 'Enter') {
         const selectedTask = filteredData[currentActiveRowIndex];
@@ -109,8 +127,20 @@ const TaskTableController = ({
         }
         if (showTaskModal) {
           handleModalClose();
-          setSelectedRowId(null);
         }
+      } else if (event.key === 'ArrowRight') {
+        console.log(searchParams.get('tab'));
+        const currentTab = TabsToShow.indexOf(
+          (searchParams.get('tab') as TabsType) || 'closed'
+        );
+        if (currentTab !== 2)
+          router.replace(`?tab=${TabsToShow[currentTab + 1]}`);
+      } else if (event.key === 'ArrowLeft') {
+        const currentTab = TabsToShow.indexOf(
+          (searchParams.get('tab') as TabsType) || 'closed'
+        );
+        if (currentTab !== 0)
+          router.replace(`?tab=${TabsToShow[currentTab - 1]}`);
       }
     };
 
@@ -171,13 +201,13 @@ const TaskTableController = ({
   }, [sortConfig]);
 
   return (
-    <div className='w-full  h-full'>
+    <div className='w-full h-full'>
       <TaskTable
-        tasksData={filteredData}
+        tasksData={filteredData.slice(visibleRange.start, visibleRange.end)}
         loading={loading}
         addTask={addTask}
         handleEditClick={handleEditClick}
-        currentActiveRowIndex={currentActiveRowIndex}
+        currentActiveRowIndex={currentActiveRowIndex - visibleRange.start}
         selectedRowId={selectedRowId}
         onSort={handleSortClick}
         sortConfig={sortConfig}
