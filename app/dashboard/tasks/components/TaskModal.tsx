@@ -15,6 +15,7 @@ const TaskModal = ({
   const [formData, setFormData] = useState<Tasks>({
     id: task?.id || crypto.randomUUID(),
     name: task?.name || '',
+    tasks: [],
     assignee: task?.assignee || '',
     status: task?.status || 'open',
     labels: task?.labels || '',
@@ -35,6 +36,7 @@ const TaskModal = ({
         id: task.id,
         name: task.name,
         status: task.status,
+        tasks: [],
         labels: task.labels,
         assignee: task.assignee,
         created_at: task.created_at,

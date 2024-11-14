@@ -11,7 +11,9 @@
   "dependencies": {
     "@shadcn/ui": "^0.0.4",
     "classnames": "^2.5.1",
+    "dotenv": "^16.4.5",
     "js-cookies": "^1.0.4",
+    "mongoose": "^8.8.1",
     "next": "15.0.2",
     "react": "19.0.0-rc-02c0e824-20241028",
     "react-dom": "19.0.0-rc-02c0e824-20241028",
