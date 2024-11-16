@@ -116,20 +116,13 @@ const TaskTable = ({
             <div
               key={task.id}
               className={cn(
-                'flex bg-inherit flex-row border p-2 gap-4 cursor-pointer',
+                'flex bg-inherit flex-row border p-2 gap-4 cursor-pointer hover:bg-slate-100',
                 currentActiveRowIndex === index && !selectedRowId
-                  ? ' font-medium'
-                  : 'hover:bg-slate-100'
+                  ? ' font-medium bg-[#e1ebfb]'
+                  : selectedRowId === task.id
+                  ? ' bg-[#a5c7fc]'
+                  : ''
               )}
-              style={{
-                backgroundColor: selectedRowId
-                  ? selectedRowId === task.id
-                    ? '#a5c7fc'
-                    : ''
-                  : currentActiveRowIndex === index
-                  ? '#e1ebfb'
-                  : '',
-              }}
               onClick={() => handleEditClick(task.id, index)}
             >
               <div className='w-1/12 text-center'>{`TSK${task.id

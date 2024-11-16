@@ -13,7 +13,7 @@ const TaskTableController = ({
 }) => {
   const [tasksData, setTasksData] = useState<Tasks[]>([]);
   const [filteredData, setFilteredData] = useState<Tasks[]>([]);
-  const [taskToEdit, setTaskToEdit] = useState<Tasks>();
+  const [taskToEdit, setTaskToEdit] = useState<Tasks | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [showTaskModal, setShowTaskModal] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<TabsType>('open');
@@ -31,6 +31,7 @@ const TaskTableController = ({
   const router = useRouter();
 
   const addTask = () => {
+    setTaskToEdit(null);
     setShowTaskModal(true);
   };
 
@@ -75,7 +76,7 @@ const TaskTableController = ({
     sortData();
 
     handleModalClose();
-    setTaskToEdit(undefined);
+    setTaskToEdit(null);
   };
 
   const sortData = () => {
@@ -98,10 +99,21 @@ const TaskTableController = ({
   };
 
   const updateVisibleRange = (index: number) => {
-    if (index < visibleRange.start) {
-      setVisibleRange({ start: index, end: index + 11 });
-    } else if (index >= visibleRange.end) {
-      setVisibleRange({ start: index - 10, end: index + 1 });
+    const rangeSize = visibleRange.end - visibleRange.start; // Size of range
+    const totalItems = filteredData.length;
+
+    if (index < visibleRange.start && index >= 0) {
+      // Shift range up
+      setVisibleRange({
+        start: Math.max(index, 0),
+        end: Math.max(index, 0) + rangeSize,
+      });
+    } else if (index >= visibleRange.end && index < totalItems) {
+      // Shift range down
+      setVisibleRange({
+        start: Math.min(index - rangeSize + 1, totalItems - rangeSize),
+        end: Math.min(index + 1, totalItems),
+      });
     }
   };
 
@@ -143,7 +155,7 @@ const TaskTableController = ({
           router.replace(`?tab=${TabsToShow[currentTab - 1]}`);
       }
     };
-
+    updateVisibleRange(currentActiveRowIndex);
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
@@ -203,7 +215,7 @@ const TaskTableController = ({
   return (
     <div className='w-full h-full'>
       <TaskTable
-        tasksData={filteredData.slice(visibleRange.start, visibleRange.end)}
+        tasksData={filteredData}
         loading={loading}
         addTask={addTask}
         handleEditClick={handleEditClick}

@@ -8,7 +8,7 @@ const TaskModal = ({
   onClose,
   onSubmit,
 }: {
-  task?: Tasks;
+  task: Tasks | null;
   onClose: () => void;
   onSubmit: (task: Tasks) => void;
 }) => {
