@@ -13,6 +13,7 @@ const Team = () => {
         const response = await fetch('/api/tasks');
         const data = await response.json();
         setTeamData(data.tasks);
+        let daat = new Set(teamData);
         setLoading(false);
       }, 1500);
     };

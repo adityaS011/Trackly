@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import SkullIcon from './icons';
+import { SkullIcon } from './icons';
 
 export default function ResponsiveLayout({
   children,
@@ -18,7 +18,7 @@ export default function ResponsiveLayout({
               This site is not available on mobile devices.
             </p>
             <p className='text-xl uppercase text-[#b12929] font-serif mt-4'>
-              {` "Get a laptop, don’t be lazy"`}
+              {` Get a laptop, don’t be lazy`}
             </p>
           </div>
         </div>

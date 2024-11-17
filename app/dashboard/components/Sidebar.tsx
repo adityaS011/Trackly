@@ -26,7 +26,7 @@ const Sidebar = () => {
     router.push(route);
   };
   return (
-    <div className='bg-blue-50 border-e w-52 h-full'>
+    <div className='bg-[#ffffff] border-e w-52 h-full'>
       <div className='px-4 pt-6 flex flex-col gap-2 '>
         <p
           className={cn(

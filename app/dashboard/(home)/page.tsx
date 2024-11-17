@@ -12,11 +12,13 @@ const HomePage = () => {
   }, [renderTask]);
 
   return (
-    <main className='w-full h-full min-h-screen bg-white p-6'>
-      <header className='flex justify-between items-center mb-8'>
+    <main className='w-full h-full min-h-screen p-6'>
+      <header className='flex justify-between items-center mb-8 mt-2'>
         <div>
-          <h1 className='text-3xl font-bold text-blue-600'>Task Manager</h1>
-          <p className='text-sm text-gray-500'>
+          <h1 className='text-3xl font-bold text-blue-700'>
+            Project Repository
+          </h1>
+          <p className='text-sm text-gray-600'>
             Stay organized and boost your productivity with ease.
           </p>
         </div>
@@ -28,7 +30,7 @@ const HomePage = () => {
         </button>
       </header>
 
-      <section className='md:flex flex-row grid  grid-cols-2  gap-4 mb-8'>
+      <section className='md:flex flex-row grid  grid-cols-2  gap-4 mb-8 '>
         {[
           { label: 'Total Tasks', value: 42, color: 'text-blue-600' },
           { label: 'Completed Tasks', value: 28, color: 'text-green-600' },
@@ -45,7 +47,7 @@ const HomePage = () => {
         ))}
       </section>
 
-      <section className='bg-white rounded-lg shadow-md p-6'>
+      <section className=' bg-[#edf7f3] rounded-lg shadow-lg p-6'>
         <div className='flex justify-between items-center mb-4'>
           <h2 className='text-xl font-semibold text-gray-800'>Open Tasks</h2>
           <button
@@ -55,10 +57,10 @@ const HomePage = () => {
             View All
           </button>
         </div>
-        <div className='overflow-auto'>
+        <div className='overflow-auto bg-white'>
           <table className='w-full border-collapse'>
             <thead>
-              <tr className='bg-blue-50 text-gray-700 uppercase text-sm'>
+              <tr className='bg-blue-600 text-gray-50 uppercase text-sm'>
                 {[
                   'ID',
                   'Name',

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import ResponsiveLayout from '@/app/utils/ResponsiveLayout';
+import { LogoIcon } from './utils/icons';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -15,10 +16,9 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Super Task',
+  title: 'Trackly',
   description: 'Manage your task with super fast effiecieny',
-  icons:
-    'https://mir-s3-cdn-cf.behance.net/project_modules/disp/22a3ab16269821.562a8602153f7.png',
+  icons: '/logoIcon.svg',
 };
 
 export default function RootLayout({

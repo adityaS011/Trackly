@@ -1,4 +1,6 @@
 'use client';
+import { LogoIcon } from '@/app/utils/icons';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { BiCaretDown, BiTask, BiUser } from 'react-icons/bi';
@@ -27,13 +29,14 @@ const Navbar = () => {
     router.push('/auth/login');
   };
   return (
-    <div className='flex flex-row justify-between w-full py-2 px-6 items-center bg-blue-50 min-h-14 '>
-      <div className='flex flex-row gap-2 items-center font-medium bg-blue-300 px-2 py-1 rounded-md shadow-md text-lg'>
-        <BiTask className='h-5 w-5 ' />
-        <p>Super TasK</p>
+    <div className='flex flex-row justify-between border-b w-full py-2 px-6 items-center bg-[#3369f3] min-h-14 '>
+      <div className='flex flex-row gap-2 items-center font-medium font-mono uppercase bg-blue-50 px-2 py-1 rounded shadow-md text-lg'>
+        <LogoIcon className='w-8  h-6' />
+
+        <p>Trackly</p>
       </div>
       <div
-        className='flex flex-row gap-2 items-center bg-blue-300 rounded-lg px-2 py-1 hover:bg-blue-400 cursor-pointer'
+        className='flex flex-row gap-2 items-center bg-blue-50 rounded px-2 py-1 hover:bg-blue-50 cursor-pointer'
         onClick={() => {
           setDropdownState(!dropdownState);
         }}
@@ -46,7 +49,7 @@ const Navbar = () => {
         {dropdownState && (
           <div
             onClick={handleLogout}
-            className='flex  flex-col text-sm absolute w-fit top-11 items-center rounded-md px-4 min-w-24  hover:bg-red-700 py-1 h-fit bg-red-600 text-white shadow-md right-8'
+            className='flex  flex-col text-sm absolute w-fit top-11 items-center rounded-md px-4 py-2 min-w-24  hover:bg-red-600 h-fit bg-red-500 text-white shadow-md right-8'
           >
             <p>Logout</p>
           </div>

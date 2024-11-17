@@ -1,6 +1,6 @@
 import { LabelType, TabsType } from './types';
 
-const names = [
+export const names = [
   'Alice',
   'Bob',
   'Charlie',

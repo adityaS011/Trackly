@@ -12,7 +12,9 @@ const MemberTasks = ({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
-    const data = teamData.filter((task) => task.assignee === name);
+    const data = teamData.filter(
+      (task) => task.assignee.toLowerCase().trim() === name.toLowerCase().trim()
+    );
     setMemberTasks(data);
   }, [name, teamData]);
 
