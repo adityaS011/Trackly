@@ -18,7 +18,6 @@ const TaskTableController = ({
   const [showTaskModal, setShowTaskModal] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<TabsType>('open');
   const [currentActiveRowIndex, setcurrentActiveRowIndex] = useState(0);
-  const [visibleRange, setVisibleRange] = useState({ start: 0, end: 11 });
   const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
   const [sortConfig, setSortConfig] = useState<{
     key: 'created_at' | 'updated_at';
@@ -98,38 +97,17 @@ const TaskTableController = ({
     });
   };
 
-  const updateVisibleRange = (index: number) => {
-    const rangeSize = visibleRange.end - visibleRange.start; // Size of range
-    const totalItems = filteredData.length;
-
-    if (index < visibleRange.start && index >= 0) {
-      // Shift range up
-      setVisibleRange({
-        start: Math.max(index, 0),
-        end: Math.max(index, 0) + rangeSize,
-      });
-    } else if (index >= visibleRange.end && index < totalItems) {
-      // Shift range down
-      setVisibleRange({
-        start: Math.min(index - rangeSize + 1, totalItems - rangeSize),
-        end: Math.min(index + 1, totalItems),
-      });
-    }
-  };
-
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'ArrowUp') {
         setcurrentActiveRowIndex((prev) => {
           const newIndex = Math.max(prev - 1, 0);
-          updateVisibleRange(newIndex);
           return newIndex;
         });
       } else if (event.key === 'ArrowDown') {
         setcurrentActiveRowIndex((prev) => {
           const maxIndex = filteredData.length - 1;
           const newIndex = Math.min(prev + 1, maxIndex);
-          updateVisibleRange(newIndex);
           return newIndex;
         });
       } else if (event.key === 'Enter') {
@@ -155,7 +133,7 @@ const TaskTableController = ({
           router.replace(`?tab=${TabsToShow[currentTab - 1]}`);
       }
     };
-    updateVisibleRange(currentActiveRowIndex);
+    //updateVisibleRange(currentActiveRowIndex);
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
@@ -219,7 +197,7 @@ const TaskTableController = ({
         loading={loading}
         addTask={addTask}
         handleEditClick={handleEditClick}
-        currentActiveRowIndex={currentActiveRowIndex - visibleRange.start}
+        currentActiveRowIndex={currentActiveRowIndex}
         selectedRowId={selectedRowId}
         onSort={handleSortClick}
         sortConfig={sortConfig}

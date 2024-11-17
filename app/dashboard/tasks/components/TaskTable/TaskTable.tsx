@@ -88,7 +88,7 @@ const TaskTable = ({
           + Add new Task
         </button>
       </div>
-      <div className='border shadow-md my-4 overflow-auto h-full mb-28'>
+      <div className='border shadow-md my-4 overflow-auto h-full mb-28 '>
         <div>
           <div className='bg-blue-600 text-white font-mono flex flex-row font-medium border uppercase p-2 gap-4'>
             <div className='w-1/12 text-center'>Id</div>
@@ -116,7 +116,7 @@ const TaskTable = ({
             <div
               key={task.id}
               className={cn(
-                'flex bg-inherit flex-row border p-2 gap-4 cursor-pointer hover:bg-slate-100',
+                'flex bg-inherit flex-row border-b p-2.5 gap-4 cursor-pointer hover:bg-slate-100',
                 currentActiveRowIndex === index && !selectedRowId
                   ? ' font-medium bg-[#e1ebfb]'
                   : selectedRowId === task.id

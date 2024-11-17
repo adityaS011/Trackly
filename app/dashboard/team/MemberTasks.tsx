@@ -9,53 +9,63 @@ const MemberTasks = ({
   teamData: Tasks[];
 }) => {
   const [memberTasks, setMemberTasks] = useState<Tasks[]>([]);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State to toggle dropdown
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
-    let data = teamData.filter((item) => item.assignee === name);
+    const data = teamData.filter((task) => task.assignee === name);
+    setMemberTasks(data);
   }, [name, teamData]);
+
+  const priorityStyles = (priority: string) => {
+    switch (priority) {
+      case 'High':
+        return 'bg-red-500 text-white';
+      case 'Medium':
+        return 'bg-yellow-500 text-white';
+      case 'Low':
+        return 'bg-green-500 text-white';
+      default:
+        return 'bg-gray-500 text-white';
+    }
+  };
 
   return (
     <div>
-      <div className='space-y-3'>
+      <div className='space-y-4'>
         <button
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          className='text-sm text-blue-600 focus:outline-none'
+          className='text-sm text-blue-600 focus:outline-none hover:text-blue-700 transition-all'
         >
-          Total Tasks: {memberTasks.length} {isDropdownOpen ? '▲' : '▼'}
+          {isDropdownOpen ? 'Hide Tasks' : `Show Tasks (${memberTasks.length})`}
         </button>
 
-        {isDropdownOpen && (
-          <div className='space-y-3 mt-2'>
+        {isDropdownOpen && memberTasks.length > 0 ? (
+          <div className='space-y-4 mt-4'>
             {memberTasks.map((task) => (
-              <div key={task.id} className='border rounded-md p-3'>
-                <p className='text-sm text-gray-700'>
-                  <strong>Task:</strong> {task.name}
-                </p>
-                <div className='flex flex-row justify-between items-center py-2'>
-                  <div className='flex items-center space-x-2'>
-                    <strong className='text-sm text-gray-600'>Priority:</strong>
-                    <span
-                      className={`px-2 py-1 rounded text-white text-sm ${
-                        task.priority === 'High'
-                          ? 'bg-red-500'
-                          : task.priority === 'Medium'
-                          ? 'bg-yellow-500'
-                          : 'bg-green-500'
-                      }`}
-                    >
-                      {task.priority}
-                    </span>
+              <div
+                key={task.id}
+                className='border rounded-lg p-4 bg-gray-50 hover:bg-gray-100 transition-all'
+              >
+                <div className='flex justify-between items-center mb-3'>
+                  <p className='text-lg font-semibold text-gray-700'>
+                    {task.name}
+                  </p>
+                  <div
+                    className={`px-2 py-1 rounded-md text-sm ${priorityStyles(
+                      task.priority
+                    )}`}
+                  >
+                    {task.priority}
                   </div>
-                  <div className='flex items-center space-x-4 mt-2'>
-                    <label
-                      htmlFor={`status-${task.id}`}
-                      className={'text-sm text-gray-600'}
-                    >
-                      <strong>Status:</strong>
-                    </label>
+                </div>
+                <div className='text-sm text-gray-600 mb-2'>
+                  <strong>Status:</strong> {task.status}
+                </div>
+
+                <div className='flex justify-between items-center'>
+                  <div className='flex items-center space-x-2'>
+                    <strong className='text-sm text-gray-600'>Status:</strong>
                     <select
-                      id={`status-${task.id}`}
                       className='border border-gray-300 rounded p-1 text-sm text-gray-600 focus:outline-none'
                       defaultValue={task.status}
                     >
@@ -64,11 +74,19 @@ const MemberTasks = ({
                       <option value='Completed'>Completed</option>
                     </select>
                   </div>
+
+                  <div>
+                    <span className='text-xs text-gray-400'>
+                      Created: {new Date(task.created_at).toLocaleDateString()}
+                    </span>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
-        )}
+        ) : memberTasks.length === 0 ? (
+          <p className='text-gray-500 text-sm mt-2'>No tasks assigned yet.</p>
+        ) : null}
       </div>
     </div>
   );

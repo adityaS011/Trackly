@@ -1,13 +1,11 @@
-'use client';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import HomePage from './(home)/page';
 
 const page = () => {
-  const router = useRouter();
-  useEffect(() => {
-    router.push('/dashboard/tasks');
-  }, []);
-  return <div></div>;
+  return (
+    <div className=' mx-auto max-w-[1150px]  w-full flex flex-grow'>
+      <HomePage />;
+    </div>
+  );
 };
 
 export default page;

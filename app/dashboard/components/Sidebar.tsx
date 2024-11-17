@@ -1,14 +1,27 @@
 'use client';
-import { useRouter, useSearchParams } from 'next/navigation';
-import React from 'react';
+import cn from '@/app/utils/cn';
+import { usePathname, useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 import { GoTasklist } from 'react-icons/go';
 import { RiTeamFill } from 'react-icons/ri';
 import { RxDashboard } from 'react-icons/rx';
 
 const Sidebar = () => {
+  const [currentTab, setCurrentTab] = useState<'tasks' | 'team' | 'dashboard'>(
+    'dashboard'
+  );
+  const pathname = usePathname();
   const router = useRouter();
-  const searchParams = useSearchParams();
-  console.log(searchParams.has('/dashboard'));
+
+  useEffect(() => {
+    if (pathname.includes('/team')) {
+      setCurrentTab('team');
+    } else if (pathname.includes('/tasks')) {
+      setCurrentTab('tasks');
+    } else {
+      setCurrentTab('dashboard');
+    }
+  }, [pathname]);
   const handleClick = (route: string) => {
     router.push(route);
   };
@@ -16,7 +29,10 @@ const Sidebar = () => {
     <div className='bg-blue-50 border-e w-52 h-full'>
       <div className='px-4 pt-6 flex flex-col gap-2 '>
         <p
-          className='flex flex-row gap-2 p-2 items-center tracking-wide rounded-md hover:bg-blue-200 cursor-pointer'
+          className={cn(
+            'flex flex-row gap-2 p-2 items-center tracking-wide rounded-md hover:bg-blue-200 cursor-pointer',
+            currentTab === 'dashboard' && 'bg-blue-200'
+          )}
           onClick={() => {
             handleClick('/dashboard');
           }}
@@ -24,7 +40,10 @@ const Sidebar = () => {
           <RxDashboard /> Home
         </p>
         <p
-          className='flex flex-row gap-2 p-2 items-center tracking-wide rounded-md hover:bg-blue-200 cursor-pointer'
+          className={cn(
+            'flex flex-row gap-2 p-2 items-center tracking-wide rounded-md hover:bg-blue-200 cursor-pointer',
+            currentTab === 'tasks' && 'bg-blue-200'
+          )}
           onClick={() => {
             handleClick('/dashboard/tasks');
           }}
@@ -32,7 +51,10 @@ const Sidebar = () => {
           <GoTasklist /> Tasks
         </p>
         <p
-          className='flex flex-row gap-2 p-2 items-center tracking-wide rounded-md hover:bg-blue-200 cursor-pointer'
+          className={cn(
+            'flex flex-row gap-2 p-2 items-center tracking-wide rounded-md hover:bg-blue-200 cursor-pointer',
+            currentTab === 'team' && 'bg-blue-200'
+          )}
           onClick={() => {
             handleClick('/dashboard/team');
           }}
