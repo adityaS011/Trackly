@@ -13,9 +13,9 @@ export const names = [
   'Jack',
 ];
 
-export const tasks = Array.from({ length: 100 }, (_, i) => {
+export const tasks = Array.from({ length: 60 }, (_, i) => {
   const statuses = ['Open', 'InProgress', 'Closed'];
-  const status = statuses[Math.floor(i / 40)];
+  const status = statuses[Math.floor(i / 20)];
 
   let labels: LabelType = 'Going On';
   if (status === 'Closed') {
