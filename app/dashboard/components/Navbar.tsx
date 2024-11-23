@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { BiCaretDown, BiTask, BiUser } from 'react-icons/bi';
 
-type UserName = {
+export type UserName = {
   username: string;
   email: string;
   password: string;
