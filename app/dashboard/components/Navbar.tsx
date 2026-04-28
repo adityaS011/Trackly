@@ -1,61 +1,57 @@
 'use client';
+import React from 'react';
+import { IoSearchOutline } from 'react-icons/io5';
 import { LogoIcon } from '@/app/utils/icons';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
-import { BiCaretDown, BiTask, BiUser } from 'react-icons/bi';
+import { useSidebar } from './SidebarContext';
+import NotificationsMenu from './NotificationsMenu';
+import UserMenu from './UserMenu';
 
-export type UserName = {
-  username: string;
-  email: string;
-  password: string;
-};
+const HamburgerIcon = () => (
+  <span className='flex flex-col gap-[3px]'>
+    <span className='block h-0.5 w-[18px] bg-current rounded' />
+    <span className='block h-0.5 w-[13px] bg-current rounded' />
+    <span className='block h-0.5 w-[18px] bg-current rounded' />
+  </span>
+);
 
 const Navbar = () => {
-  const router = useRouter();
-  const [username, setUsername] = useState<string>('user');
-  const [dropdownState, setDropdownState] = useState<boolean>(false);
-  useEffect(() => {
-    const storedUser = sessionStorage.getItem('user');
-    if (storedUser) {
-      const user: UserName = JSON.parse(storedUser);
-      setUsername(user.username);
-    }
-  }, []);
-  const handleLogout = () => {
-    let ans = confirm('Are you sure you want to logout');
-    if (!ans) return;
-    sessionStorage.setItem('isLoggedIn', 'false');
-    router.push('/auth/login');
-  };
-  return (
-    <div className='flex flex-row justify-between border-b w-full py-2 px-6 items-center bg-[#3369f3] min-h-14 '>
-      <div className='flex flex-row gap-2 items-center font-medium font-mono uppercase bg-blue-50 px-2 py-1 rounded shadow-md text-lg'>
-        <LogoIcon className='w-8  h-6' />
+  const { toggle } = useSidebar();
 
-        <p>Trackly</p>
-      </div>
-      <div
-        className='flex flex-row gap-2 items-center bg-blue-50 rounded px-2 py-1 hover:bg-blue-50 cursor-pointer'
-        onClick={() => {
-          setDropdownState(!dropdownState);
-        }}
-      >
-        <BiUser className='w-5 h-5' />
-        <div className='flex flex-row gap-2 items-center'>
-          <p>{username}</p>
-          <BiCaretDown className='mt-0.5' />
+  return (
+    <header className='flex items-center justify-between border-b border-gray-200 bg-white px-4 py-0 min-h-14 shrink-0 z-20'>
+      {/* Left */}
+      <div className='flex items-center gap-3'>
+        <button
+          onClick={toggle}
+          className='flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors'
+          title='Toggle sidebar'
+        >
+          <HamburgerIcon />
+        </button>
+        <div className='flex items-center gap-1.5'>
+          <LogoIcon className='w-6 h-6' />
+          <span className='text-base font-semibold text-gray-900 tracking-tight'>Trackly</span>
         </div>
-        {dropdownState && (
-          <div
-            onClick={handleLogout}
-            className='flex  flex-col text-sm absolute w-fit top-11 items-center rounded-md px-4 py-2 min-w-24  hover:bg-red-600 h-fit bg-red-500 text-white shadow-md right-8'
-          >
-            <p>Logout</p>
-          </div>
-        )}
       </div>
-    </div>
+
+      {/* Search */}
+      <div className='hidden md:flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 w-72 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-50 transition-all'>
+        <IoSearchOutline className='text-gray-400 shrink-0' size={15} />
+        <input
+          type='text'
+          placeholder='Search tasks, members…'
+          className='flex-1 bg-transparent text-sm text-gray-700 placeholder-gray-400 outline-none'
+        />
+        <kbd className='hidden sm:inline-flex items-center rounded border border-gray-200 px-1 text-xs text-gray-400 font-mono'>⌘K</kbd>
+      </div>
+
+      {/* Right */}
+      <div className='flex items-center gap-2'>
+        <NotificationsMenu />
+        <div className='h-5 w-px bg-gray-200' />
+        <UserMenu />
+      </div>
+    </header>
   );
 };
 

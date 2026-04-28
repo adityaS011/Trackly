@@ -1,148 +1,155 @@
+'use client';
+import { Grid as GridComponent } from 'gridjs-react';
+import { html, h, Config } from 'gridjs';
 import { Tasks } from '@/types';
-import cn from '@/app/utils/cn';
+import { useSearchParams, useRouter } from 'next/navigation';
+
+const statusBadge = (s: string) => {
+  const map: Record<string, string> = {
+    open: 'background:#dbeafe;color:#1d4ed8',
+    inprogress: 'background:#fef3c7;color:#b45309',
+    completed: 'background:#d1fae5;color:#065f46',
+    closed: 'background:#f3f4f6;color:#6b7280',
+  };
+  const style = map[s.toLowerCase()] ?? 'background:#f3f4f6;color:#6b7280';
+  const label = s === 'inprogress' ? 'In Progress' : s.charAt(0).toUpperCase() + s.slice(1);
+  return html(`<span style="display:inline-flex;align-items:center;border-radius:9999px;padding:2px 10px;font-size:11px;font-weight:500;${style}">${label}</span>`);
+};
+
+const priorityBadge = (p: string) => {
+  const map: Record<string, string> = {
+    High: 'background:#fee2e2;color:#b91c1c',
+    Medium: 'background:#fef9c3;color:#854d0e',
+    Low: 'background:#dcfce7;color:#166534',
+  };
+  const style = map[p] ?? 'background:#f3f4f6;color:#6b7280';
+  return html(`<span style="display:inline-flex;align-items:center;border-radius:9999px;padding:2px 10px;font-size:11px;font-weight:500;${style}">${p}</span>`);
+};
 
 const TaskTable = ({
   tasksData,
   loading,
   addTask,
   handleEditClick,
-  selectedRowId,
-  currentActiveRowIndex,
-  onSort,
-  sortConfig,
 }: {
   tasksData: Tasks[];
   loading: boolean;
   addTask: () => void;
-  selectedRowId: string | null;
-  currentActiveRowIndex: number;
   handleEditClick: (id: string, index?: number) => void;
-  onSort: (key: 'created_at' | 'updated_at') => void;
-  sortConfig: { key: 'created_at' | 'updated_at'; direction: 'asc' | 'desc' };
 }) => {
-  const getArrow = (key: 'created_at' | 'updated_at') => {
-    if (sortConfig.key !== key) return '↑';
-    return sortConfig.direction === 'asc' ? '↑' : '↓';
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const handleFilterChange = (filterValue: string, filterOption: string) => {
+    const currentParams = new URLSearchParams(searchParams.toString());
+    if (!filterValue) {
+      currentParams.delete(filterValue, filterOption);
+    } else {
+      currentParams.set(filterValue, filterOption);
+    }
+    router.replace(`${window.location.pathname}?${currentParams.toString()}`);
   };
+  const gridKey = tasksData.map((t) => t.id + t.updated_at).join('|');
+
+  const columns: Config['columns'] = [
+    { 
+      id: 'id', 
+      name: 'ID', 
+      width: '100px', 
+      formatter: (c) => `TSK-${String(c).substring(0, 4).toUpperCase()}`,
+      sort: false
+    },
+    { id: 'name', name: 'Task' },
+    { 
+      id: 'status', 
+      name: 'Status', 
+      width: '120px', 
+      formatter: (c) => statusBadge(String(c)) 
+    },
+    { id: 'labels', name: 'Label', width: '140px' },
+    { 
+      id: 'created_at', 
+      name: 'Created', 
+      width: '110px', 
+      formatter: (c) => new Date(String(c)).toLocaleDateString() 
+    },
+    { 
+      id: 'updated_at', 
+      name: 'Updated', 
+      width: '110px', 
+      formatter: (c) => new Date(String(c)).toLocaleDateString() 
+    },
+    { 
+      id: 'priority', 
+      name: 'Priority', 
+      width: '100px', 
+      formatter: (c) => priorityBadge(String(c)) 
+    },
+    { id: 'assignee', name: 'Assignee', width: '110px' },
+    {
+      name: 'Edit',
+      width: '70px',
+      sort: false,
+      formatter: (_c, row) =>
+        h('button', {
+          className: 'gridjs-edit-btn',
+          onClick: () => handleEditClick(String(row.cells[0].data)),
+        }, '✏️'),
+    },
+  ];
+
+  const data = tasksData.map((t) => [t.id, t.name, t.status, t.labels, t.created_at, t.updated_at, t.priority, t.assignee]);
 
   if (loading) {
     return (
-      <div className='flex flex-col mx-auto px-4 w-full h-full'>
-        <div className='flex flex-row justify-between px-6 items-center h-8 mb-4'>
-          <h2 className='font-medium font-serif text-lg bg-gray-300 rounded-md w-1/4 h-6 animate-pulse'></h2>
-          <div className='p-2 w-24 bg-gray-300 rounded-lg animate-pulse'></div>
+      <div className='flex flex-col gap-3 p-6 w-full animate-pulse'>
+        <div className='flex justify-between items-center mb-2'>
+          <div className='h-5 w-36 rounded bg-gray-200' />
+          <div className='h-8 w-28 rounded-lg bg-gray-200' />
         </div>
-        <div className='border shadow-md overflow-auto'>
-          <div className='bg-blue-600 text-white font-mono flex flex-row font-medium border uppercase p-2 gap-4'>
-            {[
-              'Id',
-              'Name',
-              'Status',
-              'Labels',
-              'Created At',
-              'Updated At',
-              'Priority',
-              'Assignee',
-            ].map((header) => (
-              <div key={header} className='w-full text-center'>
-                {header}
-              </div>
-            ))}
-          </div>
-          {Array.from({ length: 5 }).map((_, index) => (
-            <div
-              key={index}
-              className='flex bg-gray-100 flex-row border p-2 gap-4 animate-pulse'
-            >
-              <div className='w-24 h-8 bg-gray-300 rounded-md'></div>
-              <div className='flex-1 h-8 bg-gray-300 rounded-md'></div>
-              <div className='w-28 h-8 bg-gray-300 rounded-md'></div>
-              <div className='w-32 h-8 bg-gray-300 rounded-md'></div>
-              <div className='w-36 h-8 bg-gray-300 rounded-md'></div>
-              <div className='w-36 h-8 bg-gray-300 rounded-md'></div>
-              <div className='w-24 h-8 bg-gray-300 rounded-md'></div>
-              <div className='w-24 h-8 bg-gray-300 rounded-md'></div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  if (!tasksData) {
-    return (
-      <div className='w-full h-full flex items-center justify-center'>
-        <div>Oops! Unable to fetch data</div>
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className='h-10 rounded-lg bg-gray-100 w-full' />
+        ))}
       </div>
     );
   }
 
   return (
-    <div className='flex flex-col mx-auto p-2 w-full h-full pb-12'>
-      <div className='flex flex-row justify-between px-6 items-center'>
-        <h2 className='font-medium font-serif text-lg'>Open Task List</h2>
-        <button
-          onClick={addTask}
-          className='p-2 text-sm bg-blue-600 rounded-lg text-white hover:bg-blue-700 font-medium'
-        >
-          + Add new Task
-        </button>
-      </div>
-      <div className='border shadow-md my-4 overflow-auto h-full mb-28 '>
-        <div>
-          <div className='bg-blue-600 text-white font-mono flex flex-row font-medium border uppercase p-2 gap-4'>
-            <div className='w-1/12 text-center'>Id</div>
-            <div className='w-2/12'>Name</div>
-            <div className='w-[5%]'>Status</div>
-            <div className='w-1/6 text-center'>Labels</div>
-            <div
-              className='w-1/6 text-center cursor-pointer'
-              onClick={() => onSort('created_at')}
-            >
-              Created At {getArrow('created_at')}
-            </div>
-            <div
-              className='w-1/6 text-center cursor-pointer'
-              onClick={() => onSort('updated_at')}
-            >
-              Updated At {getArrow('updated_at')}
-            </div>
-            <div className='w-1/12'>Priority</div>
-            <div className='w-[10%]'>Assignee</div>
+    <div className='flex flex-col w-full h-full px-4 py-3 gap-3'>
+      <div className='flex justify-between items-center px-2'>
+        <h2 className='font-semibold text-gray-800 text-sm'>Task List</h2>
+        <div className='flex items-center gap-3'>
+          <div className='gridjs-search'>
+            <input type='search' placeholder='Type a keyword...' className='gridjs-search-input' />
           </div>
+          <select
+            onChange={(e) => handleFilterChange('priority', e.target.value)}
+            className='px-4 py-2 font-medium border border-blue-200 focus:outline-none bg-white shadow-sm rounded-lg text-sm'
+          >
+            <option value=''>Select Priority</option>
+            <option value='High'>High</option>
+            <option value='Medium'>Medium</option>
+            <option value='Low'>Low</option>
+          </select>
+          <button onClick={addTask} className='flex items-center gap-1.5 px-3 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors font-medium shadow-sm'>
+            + New Task
+          </button>
         </div>
-        <div>
-          {tasksData.map((task, index) => (
-            <div
-              key={task.id}
-              className={cn(
-                'flex bg-inherit flex-row border-b p-2.5 gap-4 cursor-pointer hover:bg-slate-100',
-                currentActiveRowIndex === index && !selectedRowId
-                  ? ' font-medium bg-[#e1ebfb]'
-                  : selectedRowId === task.id
-                  ? ' bg-[#a5c7fc]'
-                  : ''
-              )}
-              onClick={() => handleEditClick(task.id, index)}
-            >
-              <div className='w-1/12 text-center'>{`TSK${task.id
-                .toString()
-                .substring(0, 4)
-                .toUpperCase()}`}</div>
-              <div className='w-2/12'>{task.name}</div>
-              <div className='w-[5%]'>{task.status}</div>
-              <div className='text-center w-1/6'>{task.labels}</div>
-              <div className='text-center w-1/6'>
-                {new Date(task.created_at).toLocaleDateString()}
-              </div>
-              <div className='text-center w-1/6'>
-                {new Date(task.updated_at).toLocaleDateString()}
-              </div>
-              <div className='w-1/12'>{task.priority}</div>
-              <div className='w-[10%]'>{task.assignee}</div>
-            </div>
-          ))}
-        </div>
+      </div>
+      <div className=' pt-2 px-2 overflow-auto flex-1'>
+        <GridComponent
+          key={gridKey}
+          columns={columns}
+          data={data}
+          pagination={{ limit: 15, summary: true }}
+          className={{
+            container: 'gridjs-custom',
+            table: 'w-full',
+            thead: 'gridjs-thead-custom',
+            th: 'gridjs-th-custom',
+            td: 'gridjs-td-custom',
+          }}
+        />
       </div>
     </div>
   );

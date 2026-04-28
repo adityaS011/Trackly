@@ -1,6 +1,5 @@
-import React, { Suspense } from 'react';
-import Navbar from './components/Navbar';
-import Sidebar from './components/Sidebar';
+import React from 'react';
+import DashboardShell from './components/DashboardShell';
 import ResponsiveLayout from '../utils/ResponsiveLayout';
 
 const layout = ({
@@ -10,15 +9,7 @@ const layout = ({
 }>) => {
   return (
     <ResponsiveLayout>
-      <div className='flex flex-col h-screen w-screen overflow-hidden'>
-        <Navbar />
-        <div className='flex flex-row h-full w-full '>
-          <Suspense>
-            <Sidebar />
-          </Suspense>
-          {children}
-        </div>
-      </div>
+      <DashboardShell>{children}</DashboardShell>
     </ResponsiveLayout>
   );
 };

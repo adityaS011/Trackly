@@ -1,104 +1,57 @@
 'use client';
 import { useRouter } from 'next/navigation';
-
 import React, { useEffect, useState } from 'react';
+import { IoAddOutline, IoPeopleOutline } from 'react-icons/io5';
+import StatsGrid from './components/StatsGrid';
+import RecentTasksTable from './components/RecentTasksTable';
+import ActivityFeed from './components/ActivityFeed';
+import SprintProgress from './components/SprintProgress';
 
 const HomePage = () => {
-  const [renderTask, setRenderTask] = useState(false);
   const router = useRouter();
+  const [username, setUsername] = useState('there');
+
   useEffect(() => {
-    if (renderTask === false) return;
-    router.push('/dashboard/tasks');
-  }, [renderTask]);
+    const stored = sessionStorage.getItem('user');
+    if (stored) setUsername(JSON.parse(stored).username || 'there');
+  }, []);
+
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
 
   return (
-    <main className='w-full h-full min-h-screen p-6'>
-      <header className='flex justify-between items-center mb-8 mt-2'>
+    <div className='flex flex-col gap-6 p-6 min-h-full'>
+      {/* Header */}
+      <div className='flex items-start justify-between'>
         <div>
-          <h1 className='text-3xl font-bold text-blue-700'>
-            Project Repository
-          </h1>
-          <p className='text-sm text-gray-600'>
-            Stay organized and boost your productivity with ease.
-          </p>
+          <h1 className='text-2xl font-bold text-gray-900'>{greeting}, {username} 👋</h1>
+          <p className='mt-0.5 text-sm text-gray-500'>Here's what's happening with your projects today.</p>
         </div>
-        <button
-          className='px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700'
-          onClick={() => router.push('/dashboard/team')}
-        >
-          Manage Teams
-        </button>
-      </header>
-
-      <section className='md:flex flex-row grid  grid-cols-2  gap-4 mb-8 '>
-        {[
-          { label: 'Total Tasks', value: 42, color: 'text-blue-600' },
-          { label: 'Completed Tasks', value: 28, color: 'text-green-600' },
-          { label: 'Pending Tasks', value: 10, color: 'text-orange-600' },
-          { label: 'Overdue Tasks', value: 4, color: 'text-red-600' },
-        ].map(({ label, value, color }) => (
-          <div
-            key={label}
-            className='bg-white p-2 shadow border w-fit min-w-48 rounded-lg flex flex-row gap-2 items-center justify-center'
-          >
-            <h3 className='text-sm font-medium text-gray-500'>{label}:</h3>
-            <p className={`text-lg font-semibold ${color}`}>{value}</p>
-          </div>
-        ))}
-      </section>
-
-      <section className=' bg-[#edf7f3] rounded-lg shadow-lg p-6'>
-        <div className='flex justify-between items-center mb-4'>
-          <h2 className='text-xl font-semibold text-gray-800'>Open Tasks</h2>
+        <div className='flex items-center gap-2'>
           <button
-            className='text-blue-600 hover:underline'
-            onClick={() => router.push('/dashboard/tasks')}
+            onClick={() => router.push('/dashboard/team')}
+            className='flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors shadow-sm'
           >
-            View All
+            <IoPeopleOutline size={15} /> Manage Team
+          </button>
+          <button
+            onClick={() => router.push('/dashboard/tasks')}
+            className='flex items-center gap-1.5 rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 transition-colors shadow-sm'
+          >
+            <IoAddOutline size={15} /> New Task
           </button>
         </div>
-        <div className='overflow-auto bg-white'>
-          <table className='w-full border-collapse'>
-            <thead>
-              <tr className='bg-blue-600 text-gray-50 uppercase text-sm'>
-                {[
-                  'ID',
-                  'Name',
-                  'Status',
-                  'Created At',
-                  'Updated At',
-                  'Priority',
-                ].map((header) => (
-                  <th key={header} className='py-2 px-4 border'>
-                    {header}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {/* Example rows */}
-              {[...Array(5)].map((_, index) => (
-                <tr
-                  key={index}
-                  className='text-sm text-gray-700 hover:bg-gray-100'
-                >
-                  <td className='py-2 px-4 border'>TSK{index + 101}</td>
-                  <td className='py-2 px-4 border'>Task {index + 1}</td>
-                  <td className='py-2 px-4 border'>
-                    {index % 2 === 0 ? 'Pending' : 'Completed'}
-                  </td>
-                  <td className='py-2 px-4 border'>2024-11-14</td>
-                  <td className='py-2 px-4 border'>2024-11-15</td>
-                  <td className='py-2 px-4 border'>
-                    {index % 2 === 0 ? 'High' : 'Medium'}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </main>
+      </div>
+
+      <StatsGrid />
+
+      <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
+        <RecentTasksTable />
+        <ActivityFeed />
+      </div>
+
+      <SprintProgress />
+    </div>
   );
 };
 
